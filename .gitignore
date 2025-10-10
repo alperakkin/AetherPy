@@ -1,0 +1,6 @@
+game
+bin/
+build/
+__pycache__/
+*.py
+*.o
