@@ -1,4 +1,4 @@
-from game import CreateGameObject
+from game import CreateGameObject, GetGameObject
 
 player = None
 
@@ -9,6 +9,8 @@ def setup():
 
 
 def update():
-    print(f"[Python] player: {player}")
+    print("[Python] player:",player)
+    enemy = GetGameObject('Boss')
+    print("[Python] player:",enemy)
 
 

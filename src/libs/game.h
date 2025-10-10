@@ -8,14 +8,34 @@
 
 typedef struct
 {
+    char *name;
+
+} GameObject;
+
+typedef struct
+{
+    GameObject **list;
+    int object_count;
+} ObjectRegister;
+
+extern ObjectRegister object_register;
+
+GameObject *createGameObjectC(const char *name);
+GameObject *getGameObjectC(const char *name);
+void register_GameObject(GameObject *obj);
+void destroyAllGameObjects(void);
+
+typedef struct
+{
     PyObject_HEAD char *name;
+
 } PyGameObject;
 
-PyObject *py_CreateGameObject(PyObject *self, PyObject *args);
+PyObject *py_CreateGameObject(PyObject *self, PyObject *args, PyObject *kwds);
+PyObject *py_GetGameObject(PyObject *self, PyObject *args);
 PyObject *PyGameObject_repr(PyObject *self);
-PyMODINIT_FUNC PyInit_game(void);
 
-/* Tip ve modül objelerini C tarafında tanımla */
+PyMODINIT_FUNC PyInit_game(void);
 extern PyTypeObject PyGameObjectType;
 extern PyModuleDef game_module;
 extern PyMethodDef GameMethods[];
