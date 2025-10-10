@@ -16,19 +16,6 @@ Python-side `GameObject` instances are safely represented in C and can be access
 
 ---
 
-## Project Structure
-
-```
-AetherPy/
-├── Makefile
-├── src/
-│   ├── main.c      # Python embedding and game loop
-│   └── engine.c    # GameObject module
-├── player.py       # Example Python game script
-└── README.md
-```
-
----
 
 ## Installation and Running
 
