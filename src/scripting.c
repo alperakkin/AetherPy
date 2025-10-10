@@ -14,7 +14,7 @@ void finalize_scripting_engine()
     Py_Finalize();
 }
 
-Module *load_script(const char *name, const char *path)
+Module *load_script(char *name, char *path)
 {
     FILE *fp = fopen(path, "r");
     if (!fp)

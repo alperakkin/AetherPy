@@ -1,15 +1,18 @@
 #include <stdio.h>
 #include "scripting.h"
+#include "engine.h"
 
 int main(int argc, char *argv[])
 {
-    const char *PATH = "examples/player.py";
-    const char *MODULE = "player";
-    initialize_scripting_engine();
-    Module *instance = load_script(MODULE, PATH);
+    if (argc != 2)
+    {
+        printf("Please provide a Python script folder\n");
+        return 1;
+    }
+    char *PATH = argv[1];
 
-    call_game_function(instance, "setup");
-    call_game_function(instance, "update");
+    initialize_scripting_engine();
+    run(PATH);
     finalize_scripting_engine();
 
     return 0;

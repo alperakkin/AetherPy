@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-x64",
+            "browse": {
+                "path": [
+                    "/users/alperakkin/Documents/development/myprojects/AETHERPY/src/libs/*"
+                ]
+            },
+            "mergeConfigurations": true
+        }
+    ],
+    "version": 4
+}

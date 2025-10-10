@@ -10,3 +10,5 @@ def setup():
 
 def update():
     print(f"[Python] player: {player}")
+
+
