@@ -31,6 +31,7 @@ Module *load_script(char *name, char *path)
     PyRun_File(fp, path, Py_file_input, globals, globals);
     fclose(fp);
 
+    inst->start_func = PyObject_GetAttrString(inst->module, "start");
     inst->setup_func = PyObject_GetAttrString(inst->module, "setup");
     inst->update_func = PyObject_GetAttrString(inst->module, "update");
 
@@ -39,7 +40,16 @@ Module *load_script(char *name, char *path)
 
 void call_game_function(Module *instance, char *name)
 {
-    PyObject *func = strcmp(name, "setup") == 0 ? instance->setup_func : instance->update_func;
+    PyObject *func = NULL;
+    if (strcmp(name, "start") == 0)
+        func = instance->start_func;
+    else if (strcmp(name, "setup") == 0)
+        func = instance->setup_func;
+    else if (strcmp(name, "update") == 0)
+        func = instance->update_func;
+
+    if (!func)
+        printf("There is no func: %s\n", name);
 
     if (func && PyCallable_Check(func))
         PyObject_CallObject(func, NULL);

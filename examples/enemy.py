@@ -1,11 +1,15 @@
-import time
 from game import CreateGameObject
 
 enemy = None
 
-def setup():
+def start():
     global enemy
     enemy = CreateGameObject("Boss")
+
+
+def setup():
+    enemy.position.y = 12
+
 
 
 

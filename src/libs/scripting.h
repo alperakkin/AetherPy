@@ -4,6 +4,7 @@
 typedef struct
 {
     PyObject *module;
+    PyObject *start_func;
     PyObject *setup_func;
     PyObject *update_func;
 } Module;

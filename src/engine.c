@@ -14,16 +14,26 @@ bool running = true;
 
 void run(char *PATH)
 {
+
     FileList fl = scan_folder(PATH);
+    start(fl);
     setup(fl);
     game_loop(fl);
+}
+
+void start(FileList fl)
+{
+    for (int i = 0; i < fl.count; ++i)
+    {
+        modules[i] = load_script(get_name(fl.files[i]), fl.files[i]);
+        call_game_function(modules[i], "start");
+    }
 }
 
 void setup(FileList fl)
 {
     for (int i = 0; i < fl.count; ++i)
     {
-        modules[i] = load_script(get_name(fl.files[i]), fl.files[i]);
         call_game_function(modules[i], "setup");
     }
 }
