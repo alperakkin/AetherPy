@@ -10,4 +10,6 @@ def setup():
 
 
 def update():
-   pass
+    enemy.position.x += 5
+
+

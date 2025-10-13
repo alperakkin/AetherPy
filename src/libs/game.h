@@ -8,10 +8,30 @@
 
 typedef struct
 {
+    float x;
+    float y;
+    float z;
+
+} Vector3;
+
+typedef struct
+{
+    PyObject_HEAD Vector3 *c_vec;
+} PyVector3;
+
+typedef struct
+{
     char *name;
+    Vector3 position;
+    Vector3 rotation;
 
 } GameObject;
 
+typedef struct
+{
+    PyObject_HEAD char *name;
+    GameObject *c_obj;
+} PyGameObject;
 typedef struct
 {
     GameObject **list;
@@ -24,12 +44,6 @@ GameObject *createGameObjectC(const char *name);
 GameObject *getGameObjectC(const char *name);
 void register_GameObject(GameObject *obj);
 void destroyAllGameObjects(void);
-
-typedef struct
-{
-    PyObject_HEAD char *name;
-
-} PyGameObject;
 
 PyObject *py_CreateGameObject(PyObject *self, PyObject *args, PyObject *kwds);
 PyObject *py_GetGameObject(PyObject *self, PyObject *args);

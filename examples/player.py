@@ -9,8 +9,13 @@ def setup():
 
 
 def update():
-    print("[Python] player:",player)
     enemy = GetGameObject('Boss')
-    print("[Python] player:",enemy)
+    try:
+        print("[Python] player:",player.position)
+        print("[Python] enemy:",enemy.position)
+    except Exception as e:
+        print(e)
+
+
 
 
