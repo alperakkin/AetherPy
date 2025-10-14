@@ -13,8 +13,9 @@ def setup():
 
 
 def update():
-    print("[Python] player:",player.position)
+    #print("[Python] player:",player.position)
     print("[Python] enemy:",enemy.position)
+
 
 
 

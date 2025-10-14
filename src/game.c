@@ -48,6 +48,7 @@ static PyObject *PyVector3_getx(PyVector3 *self, void *closure)
 
 static int PyVector3_setx(PyVector3 *self, PyObject *value, void *closure)
 {
+
     double v = PyFloat_AsDouble(value);
     self->c_vec->x = (float)v;
     return 0;
@@ -106,6 +107,7 @@ PyTypeObject PyVector3Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT,
     .tp_getset = PyVector3_getset,
     .tp_repr = (reprfunc)PyVector3_repr,
+
 };
 
 PyMemberDef PyGameObject_members[] = {
@@ -124,6 +126,13 @@ static PyObject *PyGameObject_get_position(PyGameObject *self, void *closure)
     vec->c_vec = &self->c_obj->position;
     return (PyObject *)vec;
 }
+static PyObject *PyGameObject_set_position(PyGameObject *self, PyVector3 *value, void *closure)
+{
+
+    Vector3 *v = value->c_vec;
+    self->c_obj->position = *v;
+    return 0;
+}
 
 static PyObject *PyGameObject_get_rotation(PyGameObject *self, void *closure)
 {
@@ -134,8 +143,8 @@ static PyObject *PyGameObject_get_rotation(PyGameObject *self, void *closure)
 }
 
 static PyGetSetDef PyGameObject_getset[] = {
-    {"position", (getter)PyGameObject_get_position, NULL, "Position", NULL},
-    {"rotation", (getter)PyGameObject_get_rotation, NULL, "Rotation", NULL},
+    {"position", (getter)PyGameObject_get_position, (setter)PyGameObject_set_position, "position", NULL},
+    {"rotation", (getter)PyGameObject_get_rotation, NULL, "rotation", NULL},
     {NULL}};
 
 PyTypeObject PyGameObjectType = {
@@ -169,6 +178,35 @@ PyObject *py_CreateGameObject(PyObject *self, PyObject *args, PyObject *kwds)
     return (PyObject *)py_obj;
 }
 
+Vector3 *createVector3C(float x, float y, float z)
+{
+    Vector3 *c_vec = malloc(sizeof(Vector3));
+    c_vec->x = x;
+    c_vec->y = y;
+    c_vec->z = z;
+
+    return (Vector3 *)c_vec;
+}
+
+PyObject *py_createV3(PyObject *self, PyObject *args, PyObject *kwds)
+{
+    float x = 0;
+    float y = 0;
+    float z = 0;
+    static char *kwlist[] = {"x", "y", "z", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "fff", kwlist, &x, &y, &z))
+        return NULL;
+
+    GameObject *c_vec = createVector3C(x, y, z);
+
+    PyVector3 *py_vec = (PyVector3 *)PyType_GenericNew(&PyVector3Type, NULL, NULL);
+
+    py_vec->c_vec = c_vec;
+
+    return (PyObject *)py_vec;
+}
+
 PyObject *py_GetGameObject(PyObject *self, PyObject *args)
 {
     const char *name;
@@ -189,6 +227,7 @@ PyObject *py_GetGameObject(PyObject *self, PyObject *args)
 PyMethodDef GameMethods[] = {
     {"CreateGameObject", (PyCFunction)py_CreateGameObject, METH_VARARGS | METH_KEYWORDS, "Create a game object"},
     {"GetGameObject", py_GetGameObject, METH_VARARGS, "Get a game object by name"},
+    {"Vector", py_createV3, METH_VARARGS | METH_KEYWORDS, "Create V3 Instance"},
     {NULL, NULL, 0, NULL}};
 
 PyModuleDef game_module = {

@@ -1,4 +1,4 @@
-from game import CreateGameObject
+from game import CreateGameObject, Vector
 
 enemy = None
 
@@ -8,12 +8,11 @@ def start():
 
 
 def setup():
-    enemy.position.y = 12
-
+    enemy.position = Vector(2.0, 1.1, 1.2)
 
 
 
 def update():
-    enemy.position.x += 5
+    enemy.position.x += 0.5
 
 
