@@ -39,6 +39,7 @@ typedef struct
 } ObjectRegister;
 
 extern ObjectRegister object_register;
+Vector3 *createVector3C(float x, float y, float z);
 
 GameObject *createGameObjectC(const char *name);
 GameObject *getGameObjectC(const char *name);

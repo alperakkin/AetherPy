@@ -1,7 +1,7 @@
 #include "game.h"
 
 ObjectRegister object_register = {NULL, 0};
-
+PyTypeObject PyVector3Type;
 void register_GameObject(GameObject *obj)
 {
     GameObject **new_list = realloc(object_register.list,
@@ -94,6 +94,30 @@ static PyObject *PyVector3_repr(PyVector3 *self)
     return PyUnicode_FromFormat(buf);
 }
 
+static PyObject *PyVector3_add(PyObject *a, PyObject *b)
+{
+    if (!PyObject_TypeCheck(a, &PyVector3Type) || !PyObject_TypeCheck(b, &PyVector3Type))
+    {
+        PyErr_SetString(PyExc_TypeError, "Sum elements must be Vector3");
+        return NULL;
+    }
+    PyVector3 *vect_1 = (PyVector3 *)a;
+    PyVector3 *vect_2 = (PyVector3 *)b;
+
+    PyVector3 *result = (PyVector3 *)PyType_GenericNew(&PyVector3Type, NULL, NULL);
+    if (!result)
+        return NULL;
+    result->c_vec = createVector3C(
+        vect_1->c_vec->x + vect_2->c_vec->x,
+        vect_1->c_vec->y + vect_2->c_vec->y,
+        vect_1->c_vec->z + vect_2->c_vec->z);
+    return (PyObject *)result;
+}
+
+static PyNumberMethods PyVector3_as_number = {
+    .nb_add = PyVector3_add,
+};
+
 static PyGetSetDef PyVector3_getset[] = {
     {"x", (getter)PyVector3_getx, (setter)PyVector3_setx, "x", NULL},
     {"y", (getter)PyVector3_gety, (setter)PyVector3_sety, "y", NULL},
@@ -107,6 +131,7 @@ PyTypeObject PyVector3Type = {
     .tp_flags = Py_TPFLAGS_DEFAULT,
     .tp_getset = PyVector3_getset,
     .tp_repr = (reprfunc)PyVector3_repr,
+    .tp_as_number = &PyVector3_as_number,
 
 };
 
@@ -121,16 +146,25 @@ static PyObject *PyGameObject_get_position(PyGameObject *self, void *closure)
         PyErr_SetString(PyExc_AttributeError, "GameObject Not Exists!");
         return NULL;
     }
-    PyVector3 *vec = PyObject_New(PyVector3, &PyVector3Type);
+    PyVector3 *vec = (PyVector3 *)PyType_GenericNew(&PyVector3Type, NULL, NULL);
 
     vec->c_vec = &self->c_obj->position;
+
     return (PyObject *)vec;
 }
-static PyObject *PyGameObject_set_position(PyGameObject *self, PyVector3 *value, void *closure)
+static int PyGameObject_set_position(PyGameObject *self, PyVector3 *value, void *closure)
 {
+    if (!PyObject_TypeCheck(value, &PyVector3Type))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expected Vector3");
+        return -1;
+    }
+    PyVector3 *vec = (PyVector3 *)value;
 
-    Vector3 *v = value->c_vec;
-    self->c_obj->position = *v;
+    self->c_obj->position.x = vec->c_vec->x;
+    self->c_obj->position.y = vec->c_vec->y;
+    self->c_obj->position.z = vec->c_vec->z;
+
     return 0;
 }
 
@@ -198,7 +232,7 @@ PyObject *py_createV3(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "fff", kwlist, &x, &y, &z))
         return NULL;
 
-    GameObject *c_vec = createVector3C(x, y, z);
+    Vector3 *c_vec = createVector3C(x, y, z);
 
     PyVector3 *py_vec = (PyVector3 *)PyType_GenericNew(&PyVector3Type, NULL, NULL);
 
@@ -227,7 +261,7 @@ PyObject *py_GetGameObject(PyObject *self, PyObject *args)
 PyMethodDef GameMethods[] = {
     {"CreateGameObject", (PyCFunction)py_CreateGameObject, METH_VARARGS | METH_KEYWORDS, "Create a game object"},
     {"GetGameObject", py_GetGameObject, METH_VARARGS, "Get a game object by name"},
-    {"Vector", py_createV3, METH_VARARGS | METH_KEYWORDS, "Create V3 Instance"},
+    {"Vector", (PyCFunction)py_createV3, METH_VARARGS | METH_KEYWORDS, "Create V3 Instance"},
     {NULL, NULL, 0, NULL}};
 
 PyModuleDef game_module = {

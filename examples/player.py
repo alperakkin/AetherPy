@@ -9,12 +9,14 @@ def start():
 
 def setup():
     global enemy
+    player.position.x = 5
     enemy = GetGameObject('Boss')
 
 
 def update():
-    #print("[Python] player:",player.position)
+    print("[Python] player:",player.position)
     print("[Python] enemy:",enemy.position)
+
 
 
 

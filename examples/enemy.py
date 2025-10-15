@@ -8,11 +8,14 @@ def start():
 
 
 def setup():
-    enemy.position = Vector(2.0, 1.1, 1.2)
+    enemy.position = Vector(2,1,2)
+
 
 
 
 def update():
-    enemy.position.x += 0.5
+    enemy.position += Vector(0.0, 5.0, 0.0)
+
+
 
 
