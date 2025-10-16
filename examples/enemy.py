@@ -1,13 +1,15 @@
-from Aether import CreateGameObject
+from Aether import CreateGameObject, Vector
 
 enemy = None
 
 def start():
-
     global enemy
     enemy = CreateGameObject("Boss")
 
 
+def setup():
+    enemy.position = Vector(5,5,5)
+
 
 def update():
-    print(enemy)
+    enemy.position.x += 2
