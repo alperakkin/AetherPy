@@ -5,16 +5,14 @@ LDFLAGS := -L/Users/alperakkin/.pyenv/versions/3.12.11/lib -lpython3.12 -undefin
 
 
 
-SRC := $(wildcard src/*.c src/game/*.c src/libs/*.c)
+SRC := $(shell find src -name '*.c')
 OBJ := $(patsubst src/%,build/%,$(SRC:.c=.o))
 BUILD_DIRS := $(sort $(dir $(OBJ)))
-TARGET := bin/game
+TARGET := bin/Aether
 
 all: $(TARGET)
 
-
 $(TARGET): $(OBJ)
-	@mkdir -p $(dir $@)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(BUILD_DIRS):
@@ -22,7 +20,6 @@ $(BUILD_DIRS):
 
 build/%.o: src/%.c | $(BUILD_DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@
-
 
 clean:
 	rm -rf build $(TARGET)

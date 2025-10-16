@@ -1,5 +1,5 @@
 #pragma once
-#include <Python.h>
+#include "proxy.h"
 
 typedef struct
 {
@@ -7,6 +7,7 @@ typedef struct
     PyObject *start_func;
     PyObject *setup_func;
     PyObject *update_func;
+    char *name;
 } Module;
 
 void initialize_scripting_engine();
