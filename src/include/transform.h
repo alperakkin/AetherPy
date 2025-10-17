@@ -9,6 +9,5 @@ typedef struct
 
 } Vector3;
 
-char *Vector3_repr(Vector3 *vector);
 Vector3 *CreateVector3(float x, float y, float z);
 #endif

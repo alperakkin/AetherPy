@@ -32,8 +32,15 @@ FileList scan_folder(char *folder)
 
 char *get_name(char *path)
 {
-    char *filename = strrchr(path, '/');
-    if (filename)
-        return filename + 1;
-    return path;
+    static char name[128];
+    const char *base = strrchr(path, '/');
+    if (!base)
+        base = path;
+    else
+        base++;
+    strcpy(name, base);
+    char *dot = strrchr(name, '.');
+    if (dot)
+        *dot = '\0';
+    return name;
 }

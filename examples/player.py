@@ -1,4 +1,5 @@
-from Aether import CreateGameObject,GetGameObject,Vector
+from Aether.scene import CreateGameObject,GetGameObject
+from Aether.transform import Vector
 
 player = None
 enemy = None

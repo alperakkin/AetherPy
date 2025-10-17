@@ -1,5 +1,5 @@
 #pragma once
-#include "proxy.h"
+#include "Python.h"
 
 typedef struct
 {

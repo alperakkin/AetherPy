@@ -4,8 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7",
-                "${workspaceFolder}/src/include"
+                "/Users/alperakkin/.pyenv/versions/3.12.11/include/python3.12",
+                "/Users/alperakkin/Documents/development/myprojects/AetherPy/src/include"
             ],
             "defines": [],
             "cStandard": "c17",

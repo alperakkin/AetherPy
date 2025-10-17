@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "scene.h"
 ObjectRegister object_register = {NULL, 0};
 
 void RegisterGameObject(GameObject *obj)
@@ -38,15 +38,4 @@ GameObject *GetGameObject(const char *name)
             return obj;
     }
     return NULL;
-}
-
-char *GameObject_repr(GameObject *self)
-{
-    if (!self)
-        return NULL;
-
-    char buf[128];
-    snprintf(buf, sizeof(buf), "GameObject(name=%s)", self->name);
-
-    return buf;
 }
