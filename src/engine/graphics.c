@@ -1,14 +1,20 @@
 #include "graphics.h"
 
-int SCREEN_WIDTH = 640;
-int SCREEN_HEIGHT = 480;
-
-Screen *init_screen()
+Screen *init_screen(Settings settings)
 {
 
     Screen *screen = malloc(sizeof(Screen));
-    screen->width = SCREEN_WIDTH;
-    screen->height = SCREEN_HEIGHT;
+    screen->width = settings.SCREEN_WIDTH;
+    screen->height = settings.SCREEN_HEIGHT;
+
+    Color *background = malloc(sizeof(Color));
+    background->R = settings.background.R;
+    background->G = settings.background.G;
+    background->B = settings.background.B;
+    background->A = settings.background.A;
+
+    screen->background = *background;
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Graphics could not be initialized! SDL_Error: %s\n",
@@ -47,7 +53,11 @@ bool render(Screen *screen)
         if (e.type == SDL_QUIT)
             return false;
     }
-    SDL_SetRenderDrawColor(screen->renderer, 0, 128, 255, 255);
+    SDL_SetRenderDrawColor(screen->renderer,
+                           screen->background.R,
+                           screen->background.G,
+                           screen->background.B,
+                           screen->background.A);
     SDL_RenderClear(screen->renderer);
 
     SDL_RenderPresent(screen->renderer);

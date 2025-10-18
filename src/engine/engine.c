@@ -15,12 +15,21 @@ bool running = true;
 
 void run(char *PATH)
 {
+    Color color;
+    color.R = 0;
+    color.G = 0;
+    color.B = 0;
 
-    FileList fl = scan_folder(PATH);
+    Settings settings;
+    settings.SCREEN_WIDTH = DEFAULT_SCREEN_WIDTH;
+    settings.SCREEN_HEIGHT = DEFAULT_SCREEN_HEIGHT;
+    settings.background = color;
+    get_settings(PATH, &settings);
+    FileList fl = scan_folder(join_scripts_path(PATH));
     load_modules(fl);
     start();
     setup();
-    Screen *screen = init_screen();
+    Screen *screen = init_screen(settings);
     game_loop(screen);
 
     destroy_screen(screen);
