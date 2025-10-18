@@ -1,4 +1,4 @@
-#include "main_px.h"
+#include "proxy/main_px.h"
 
 PyModuleDef aether_module = {
     PyModuleDef_HEAD_INIT,

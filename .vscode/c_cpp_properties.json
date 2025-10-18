@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/alperakkin/.pyenv/versions/3.12.11/include/python3.12",
-                "/Users/alperakkin/Documents/development/myprojects/AetherPy/src/include"
+                "/Users/alperakkin/Documents/development/myprojects/AetherPy/src/include/**"
             ],
             "defines": [],
             "cStandard": "c17",

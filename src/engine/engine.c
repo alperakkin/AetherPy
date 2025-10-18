@@ -1,8 +1,8 @@
 #include <time.h>
 #include <stdbool.h>
-#include "scripting.h"
-#include "engine.h"
-#include "graphics.h"
+#include "libs/scripting.h"
+#include "engine/engine.h"
+#include "engine/graphics.h"
 
 #define DEFAULT_FPS 60
 #define MAX_SCRIPTS 1024

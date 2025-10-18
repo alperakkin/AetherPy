@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "scripting.h"
-#include "engine.h"
+#include "libs/scripting.h"
+#include "engine/engine.h"
 
 int main(int argc, char *argv[])
 {

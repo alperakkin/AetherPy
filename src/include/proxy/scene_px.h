@@ -1,7 +1,7 @@
 #pragma once
 #include <Python.h>
-#include "scene.h"
-#include "transform_px.h"
+#include "game/scene.h"
+#include "proxy/transform_px.h"
 
 typedef struct
 {

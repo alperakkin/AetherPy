@@ -1,4 +1,4 @@
-#include "scene_px.h"
+#include "proxy/scene_px.h"
 PyTypeObject ProxyGameObjectType;
 PyTypeObject ProxyVector3Type;
 

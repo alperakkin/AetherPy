@@ -1,4 +1,4 @@
-#include "scene.h"
+#include "game/scene.h"
 ObjectRegister object_register = {NULL, 0};
 
 void RegisterGameObject(GameObject *obj)

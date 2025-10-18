@@ -1,5 +1,5 @@
 #pragma once
-#include "game_types.h"
+#include "game/color.h"
 
 typedef struct
 {
