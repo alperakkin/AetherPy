@@ -48,7 +48,7 @@ void start()
 {
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
-        call_game_function(modules[i], "start");
+        call_game_function(modules[i]->start_func);
     }
 }
 
@@ -56,7 +56,7 @@ void setup()
 {
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
-        call_game_function(modules[i], "setup");
+        call_game_function(modules[i]->setup_func);
     }
 }
 
@@ -64,7 +64,7 @@ void update()
 {
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
-        call_game_function(modules[i], "update");
+        call_game_function(modules[i]->update_func);
     }
 }
 

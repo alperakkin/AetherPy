@@ -74,17 +74,8 @@ Module *load_script(char *name, char *path)
     return inst;
 }
 
-void call_game_function(Module *instance, char *name)
+void call_game_function(PyObject *func)
 {
-
-    PyObject *func = NULL;
-    if (strcmp(name, "start") == 0)
-        func = instance->start_func;
-    else if (strcmp(name, "setup") == 0)
-        func = instance->setup_func;
-    else if (strcmp(name, "update") == 0)
-        func = instance->update_func;
-
     if (func && PyCallable_Check(func))
     {
         PyObject_CallObject(func, NULL);
