@@ -13,7 +13,7 @@ PyObject *ProxyGameObject_get_position(ProxyGameObject *self, void *closure);
 int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3 *value, void *closure);
 
 PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure);
-
+int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3 *value, void *closure);
 PyObject *ProxyGameObject_repr(PyObject *self);
 
 PyObject *py_CreateGameObject(PyObject *self, PyObject *args, PyObject *kwds);

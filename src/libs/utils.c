@@ -1,5 +1,6 @@
+#include <math.h>
 #include "libs/utils.h"
-
+#include "game/transform.h"
 #define MAX_LINE 256
 
 char *join_scripts_path(const char *path)
@@ -106,4 +107,23 @@ char *get_name(char *path)
     if (dot)
         *dot = '\0';
     return name;
+}
+
+double deg_to_rad(double deg) { return deg * M_PI / 180.0; }
+double rad_to_deg(double rad) { return rad * 180.0 / M_PI; }
+
+double normalize_deg(double deg)
+{
+    deg = fmod(deg, 360.0);
+    if (deg < 0)
+        deg += 360.0;
+    return deg;
+}
+
+double normalize_rad(double rad)
+{
+    rad = fmod(rad, 2.0 * M_PI);
+    if (rad < 0)
+        rad += 2.0 * M_PI;
+    return rad;
 }

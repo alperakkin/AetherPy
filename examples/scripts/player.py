@@ -13,10 +13,16 @@ def setup():
     global enemy
     enemy = GetGameObject("Boss")
     player.position = Vector(1,1,1)
+    player.rotation = Vector(1,1,1)
 
 
 def update():
-    print("Player", player.position)
-    print("Enemy", enemy.position)
-    player.position += Vector(0,0,1)
+    player.rotation += Vector(0,0,1)
+    print(player, "pos", player.position,"rot", player.rotation)
+    print(enemy, "pos", enemy.position,"rot", enemy.rotation)
+
+
+
+
+
 

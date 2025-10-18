@@ -1,4 +1,5 @@
 #include "proxy/scene_px.h"
+#include "libs/utils.h"
 PyTypeObject ProxyGameObjectType;
 PyTypeObject ProxyVector3Type;
 
@@ -38,14 +39,40 @@ int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3 *value, voi
 PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure)
 {
     ProxyVector3 *vec = PyObject_New(ProxyVector3, &ProxyVector3Type);
+    vec->c_obj = PyMem_Malloc(sizeof(Vector3));
 
-    vec->c_obj = &self->c_obj->rotation;
+    double x_rad = normalize_rad(self->c_obj->rotation.x);
+    double y_rad = normalize_rad(self->c_obj->rotation.y);
+    double z_rad = normalize_rad(self->c_obj->rotation.z);
+    vec->c_obj->x = rad_to_deg(x_rad);
+    vec->c_obj->y = rad_to_deg(y_rad);
+    vec->c_obj->z = rad_to_deg(z_rad);
     return (PyObject *)vec;
+}
+
+int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3 *value, void *closure)
+{
+    if (!PyObject_TypeCheck(value, &ProxyVector3Type))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expected Vector3");
+        return -1;
+    }
+    ProxyVector3 *vec = (ProxyVector3 *)value;
+
+    double x_deg = normalize_deg(vec->c_obj->x);
+    double y_deg = normalize_deg(vec->c_obj->y);
+    double z_deg = normalize_deg(vec->c_obj->z);
+
+    self->c_obj->rotation.x = deg_to_rad(x_deg);
+    self->c_obj->rotation.y = deg_to_rad(y_deg);
+    self->c_obj->rotation.z = deg_to_rad(z_deg);
+
+    return 0;
 }
 
 PyGetSetDef ProxyGameObject_getset[] = {
     {"position", (getter)ProxyGameObject_get_position, (setter)ProxyGameObject_set_position, "position", NULL},
-    {"rotation", (getter)ProxyGameObject_get_rotation, NULL, "rotation", NULL},
+    {"rotation", (getter)ProxyGameObject_get_rotation, (setter)ProxyGameObject_set_rotation, "rotation", NULL},
     {NULL}};
 
 PyTypeObject ProxyGameObjectType = {
