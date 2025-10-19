@@ -18,13 +18,16 @@ PyMODINIT_FUNC PyInit_Aether(void)
 
     PyObject *scene_mod = PyInit_scene();
     PyObject *transform_mod = PyInit_transform();
+    PyObject *graphics_mod = PyInit_graphics();
 
     PyModule_AddObject(m, "scene", scene_mod);
     PyModule_AddObject(m, "transform", transform_mod);
+    PyModule_AddObject(m, "graphics", graphics_mod);
 
     PyObject *sys_modules = PyImport_GetModuleDict();
     PyDict_SetItemString(sys_modules, "Aether.scene", scene_mod);
     PyDict_SetItemString(sys_modules, "Aether.transform", transform_mod);
+    PyDict_SetItemString(sys_modules, "Aether.graphics", graphics_mod);
 
     return m;
 }

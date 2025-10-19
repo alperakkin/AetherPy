@@ -5,12 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "transform.h"
+#include "game/transform.h"
+#include "game/graphics/shape.h"
+
 typedef struct
 {
     char *name;
     Vector3 position;
     Vector3 rotation;
+    RenderComponent shape;
 
 } GameObject;
 

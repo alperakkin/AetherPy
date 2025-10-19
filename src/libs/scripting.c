@@ -65,11 +65,25 @@ Module *load_script(char *name, char *path)
 
     PyObject *globals = PyModule_GetDict(inst->module);
 
-    PyRun_File(fp, path, Py_file_input, globals, globals);
+    PyObject *result = PyRun_File(fp, path, Py_file_input, globals, globals);
+    if (!result)
+    {
+        if (PyErr_Occurred())
+        {
+            PyErr_Print();
+            PyErr_Clear();
+        }
+    }
     fclose(fp);
     inst->start_func = PyObject_GetAttrString(inst->module, "start");
+    if (!inst->start_func)
+        PyErr_Clear();
     inst->setup_func = PyObject_GetAttrString(inst->module, "setup");
+    if (!inst->setup_func)
+        PyErr_Clear();
     inst->update_func = PyObject_GetAttrString(inst->module, "update");
+    if (!inst->update_func)
+        PyErr_Clear();
 
     return inst;
 }
