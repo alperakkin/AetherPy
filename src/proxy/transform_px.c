@@ -1,5 +1,6 @@
 #include "proxy/transform_px.h"
 PyTypeObject ProxyVector3Type;
+
 PyObject *ProxyVector3_getx(ProxyVector3 *self, void *closure)
 {
     return PyFloat_FromDouble(self->c_obj->x);

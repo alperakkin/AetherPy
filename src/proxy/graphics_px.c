@@ -1,6 +1,7 @@
 #include "proxy/graphics_px.h"
 
 PyTypeObject ProxyColorType;
+PyTypeObject ProxyRectangleType;
 
 PyObject *ProxyColor_getR(ProxyColor *self, void *closure)
 {
@@ -104,8 +105,125 @@ PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds)
     return (PyObject *)py_color;
 }
 
+PyObject *ProxyRectangle_get_size(ProxyRectangle *self, void *closure)
+{
+    if (!self->c_rect)
+    {
+        PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
+        return NULL;
+    }
+    ProxyVector3 *vect = (ProxyVector3 *)PyType_GenericNew(&ProxyVector3Type, NULL, NULL);
+
+    vect->c_obj = &self->c_rect->size;
+
+    return (PyObject *)vect;
+}
+int ProxyRectangle_set_size(ProxyRectangle *self, ProxyVector3 *value, void *closure)
+{
+    if (!PyObject_TypeCheck(value, &ProxyVector3Type))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expected Vector");
+        return -1;
+    }
+    ProxyVector3 *vec = (ProxyVector3 *)value;
+
+    self->c_rect->size.x = vec->c_obj->x;
+    self->c_rect->size.y = vec->c_obj->y;
+    self->c_rect->size.z = vec->c_obj->z;
+
+    return 0;
+}
+
+PyObject *ProxyRectangle_get_color(ProxyRectangle *self, void *closure)
+{
+    if (!self->c_rect)
+    {
+        PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
+        return NULL;
+    }
+    ProxyColor *color = (ProxyColor *)PyType_GenericNew(&ProxyColorType, NULL, NULL);
+
+    color->c_obj = &self->c_rect->color;
+
+    return (PyObject *)color;
+}
+int ProxyRectangle_set_color(ProxyRectangle *self, ProxyColor *value, void *closure)
+{
+    if (!PyObject_TypeCheck(value, &ProxyColorType))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expected Color");
+        return -1;
+    }
+    ProxyColor *color = (ProxyColor *)value;
+
+    self->c_rect->color.R = color->c_obj->R;
+    self->c_rect->color.G = color->c_obj->G;
+    self->c_rect->color.B = color->c_obj->B;
+    self->c_rect->color.A = color->c_obj->A;
+
+    return 0;
+}
+
+PyObject *ProxyRectangle_repr(ProxyRectangle *self)
+{
+    ShapeRectangle *rect = (ShapeRectangle *)self->c_rect;
+    if (!rect)
+    {
+        PyErr_SetString(PyExc_AttributeError, "Rectangle not assigned");
+        return NULL;
+    }
+    char buf[128];
+    snprintf(buf, sizeof(buf), "Rectangle(size=(%f, %f), color=(%d, %d, %d, %d))",
+
+             (float)rect->size.x,
+             (float)rect->size.y,
+             (int)rect->color.R,
+             (int)rect->color.G,
+             (int)rect->color.B,
+             (int)rect->color.A);
+
+    return PyUnicode_FromFormat(buf);
+}
+
+PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
+{
+    PyObject *py_size = NULL;
+    PyObject *py_color = NULL;
+
+    static char *kwlist[] = {"size", "color", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_size, &py_color))
+        return NULL;
+
+    Vector3 *c_size = ((ProxyVector3 *)py_size)->c_obj;
+    Color *c_color = ((ProxyColor *)py_color)->c_obj;
+
+    ShapeRectangle *rect = CreateRectangle(c_size, c_color);
+
+    ProxyRectangle *py_rect = (ProxyRectangle *)PyType_GenericNew(&ProxyRectangleType, NULL, NULL);
+    py_rect->c_rect = rect;
+
+    return (PyObject *)py_rect;
+}
+
+PyGetSetDef ProxyRectangle_getset[] = {
+    {"size", (getter)ProxyRectangle_get_size, (setter)ProxyRectangle_set_size, "size", NULL},
+    {"color", (getter)ProxyRectangle_get_color, (setter)ProxyRectangle_set_color, "R", NULL},
+    {NULL}};
+
+PyTypeObject ProxyRectangleType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+        .tp_name = "Aether.Rectangle",
+    .tp_basicsize = sizeof(ProxyRectangle),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_getset = ProxyRectangle_getset,
+    .tp_repr = (reprfunc)ProxyRectangle_repr,
+
+};
+
 PyMethodDef GraphicsMethods[] = {
     {"Color", (PyCFunction)py_createColor, METH_VARARGS | METH_KEYWORDS, "Create Color Object"},
+    {"Rectangle", (PyCFunction)py_createRectangle, METH_VARARGS | METH_KEYWORDS, "Create Rectangle Object"},
     {NULL, NULL, 0, NULL}};
 
 PyModuleDef graphic_module = {
@@ -119,9 +237,12 @@ PyMODINIT_FUNC PyInit_graphics(void)
 {
     if (PyType_Ready(&ProxyColorType) < 0)
         return NULL;
+    if (PyType_Ready(&ProxyRectangleType) < 0)
+        return NULL;
 
     PyObject *m = PyModule_Create(&graphic_module);
     Py_INCREF(&ProxyColorType);
     PyModule_AddObject(m, "ColorRGBA", (PyObject *)&ProxyColorType);
+    PyModule_AddObject(m, "Rectangle2D", (PyObject *)&ProxyRectangleType);
     return m;
 }

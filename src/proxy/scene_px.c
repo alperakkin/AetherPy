@@ -73,6 +73,7 @@ int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3 *value, voi
 PyGetSetDef ProxyGameObject_getset[] = {
     {"position", (getter)ProxyGameObject_get_position, (setter)ProxyGameObject_set_position, "position", NULL},
     {"rotation", (getter)ProxyGameObject_get_rotation, (setter)ProxyGameObject_set_rotation, "rotation", NULL},
+    {"shape", (getter)ProxyGameObject_get_shape, (setter)ProxyGameObject_set_shape, "shape", NULL},
     {NULL}};
 
 PyTypeObject ProxyGameObjectType = {

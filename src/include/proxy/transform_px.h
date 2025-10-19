@@ -1,7 +1,7 @@
 #pragma once
 #include <Python.h>
 #include "game/transform.h"
-
+extern PyTypeObject ProxyVector3Type;
 typedef struct
 {
     PyObject_HEAD Vector3 *c_obj;

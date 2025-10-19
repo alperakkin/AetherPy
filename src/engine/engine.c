@@ -19,6 +19,7 @@ void run(char *PATH)
     color.R = 0;
     color.G = 0;
     color.B = 0;
+    color.A = 0;
 
     Settings settings;
     settings.SCREEN_WIDTH = DEFAULT_SCREEN_WIDTH;
@@ -46,6 +47,7 @@ void load_modules(FileList fl)
 
 void start()
 {
+
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
         call_game_function(modules[i]->start_func);

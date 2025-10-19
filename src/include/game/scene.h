@@ -13,7 +13,7 @@ typedef struct
     char *name;
     Vector3 position;
     Vector3 rotation;
-    RenderComponent shape;
+    void *shape;
 
 } GameObject;
 

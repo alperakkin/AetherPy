@@ -25,8 +25,9 @@ void initialize_scripting_engine()
 
     PyObject *scene = PyObject_GetAttrString(Aether_mod, "scene");
     PyObject *transform = PyObject_GetAttrString(Aether_mod, "transform");
+    PyObject *graphics = PyObject_GetAttrString(Aether_mod, "graphics");
 
-    if (!scene || !transform)
+    if (!scene || !transform || !graphics)
     {
         PyErr_Print();
         fprintf(stderr, "Modules could not be accessed\n");
@@ -36,11 +37,13 @@ void initialize_scripting_engine()
 
     Py_XDECREF(scene);
     Py_XDECREF(transform);
+    Py_XDECREF(graphics);
     Py_XDECREF(Aether_mod);
 }
 
 void finalize_scripting_engine()
 {
+
     Py_Finalize();
 }
 
