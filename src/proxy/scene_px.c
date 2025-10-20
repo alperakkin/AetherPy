@@ -70,6 +70,33 @@ int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3 *value, voi
     return 0;
 }
 
+PyObject *ProxyGameObject_get_shape(ProxyGameObject *self, void *closure)
+{
+    if (!self->c_obj)
+    {
+        PyErr_SetString(PyExc_AttributeError, "GameObject Not Exists!");
+        return NULL;
+    }
+    ProxyShape *shape = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+
+    shape->c_obj = (Shape *)self->c_obj->shape;
+
+    return (PyObject *)shape;
+}
+int ProxyGameObject_set_shape(ProxyGameObject *self, ProxyVector3 *value, void *closure)
+{
+    if (!PyObject_TypeCheck(value, &ProxyShapeType))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expected Shape");
+        return -1;
+    }
+    ProxyShape *shape = (ProxyShape *)value;
+
+    self->c_obj->shape = shape->c_obj;
+
+    return 0;
+}
+
 PyGetSetDef ProxyGameObject_getset[] = {
     {"position", (getter)ProxyGameObject_get_position, (setter)ProxyGameObject_set_position, "position", NULL},
     {"rotation", (getter)ProxyGameObject_get_rotation, (setter)ProxyGameObject_set_rotation, "rotation", NULL},

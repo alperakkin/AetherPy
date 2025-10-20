@@ -4,6 +4,7 @@
 #include "game/graphics/shape.h"
 #include "proxy/transform_px.h"
 
+extern PyTypeObject ProxyShapeType;
 typedef struct
 {
     PyObject_HEAD Color *c_obj;
@@ -11,8 +12,8 @@ typedef struct
 
 typedef struct
 {
-    PyObject_HEAD ShapeRectangle *c_rect;
-} ProxyRectangle;
+    PyObject_HEAD Shape *c_obj;
+} ProxyShape;
 
 PyObject *ProxyVector3_getR(ProxyColor *self, void *closure);
 int ProxyColor_setR(ProxyColor *self, PyObject *value, void *closure);
@@ -33,11 +34,11 @@ PyObject *ProxyColor_repr(ProxyColor *self);
 
 PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds);
 
-PyObject *ProxyRectangle_get_size(ProxyRectangle *self, void *closure);
-int ProxyRectangle_set_size(ProxyRectangle *self, ProxyVector3 *value, void *closure);
-PyObject *ProxyRectangle_get_color(ProxyRectangle *self, void *closure);
-int ProxyRectangle_set_color(ProxyRectangle *self, ProxyColor *value, void *closure);
-PyObject *ProxyRectangle_repr(ProxyRectangle *self);
+PyObject *ProxyShape_get_size(ProxyShape *self, void *closure);
+int ProxyShape_set_size(ProxyShape *self, ProxyVector3 *value, void *closure);
+PyObject *ProxyShape_get_color(ProxyShape *self, void *closure);
+int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure);
+PyObject *ProxyShape_repr(ProxyShape *self);
 
 PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds);
 PyMODINIT_FUNC PyInit_graphics(void);

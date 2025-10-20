@@ -1,7 +1,7 @@
 #include "proxy/graphics_px.h"
 
 PyTypeObject ProxyColorType;
-PyTypeObject ProxyRectangleType;
+PyTypeObject ProxyShapeType;
 
 PyObject *ProxyColor_getR(ProxyColor *self, void *closure)
 {
@@ -105,7 +105,7 @@ PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds)
     return (PyObject *)py_color;
 }
 
-PyObject *ProxyRectangle_get_size(ProxyRectangle *self, void *closure)
+PyObject *ProxyShape_get_size(ProxyShape *self, void *closure)
 {
     if (!self->c_rect)
     {
@@ -118,7 +118,7 @@ PyObject *ProxyRectangle_get_size(ProxyRectangle *self, void *closure)
 
     return (PyObject *)vect;
 }
-int ProxyRectangle_set_size(ProxyRectangle *self, ProxyVector3 *value, void *closure)
+int ProxyShape_set_size(ProxyShape *self, ProxyVector3 *value, void *closure)
 {
     if (!PyObject_TypeCheck(value, &ProxyVector3Type))
     {
@@ -134,7 +134,7 @@ int ProxyRectangle_set_size(ProxyRectangle *self, ProxyVector3 *value, void *clo
     return 0;
 }
 
-PyObject *ProxyRectangle_get_color(ProxyRectangle *self, void *closure)
+PyObject *ProxyShape_get_color(ProxyShape *self, void *closure)
 {
     if (!self->c_rect)
     {
@@ -147,7 +147,7 @@ PyObject *ProxyRectangle_get_color(ProxyRectangle *self, void *closure)
 
     return (PyObject *)color;
 }
-int ProxyRectangle_set_color(ProxyRectangle *self, ProxyColor *value, void *closure)
+int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure)
 {
     if (!PyObject_TypeCheck(value, &ProxyColorType))
     {
@@ -164,23 +164,23 @@ int ProxyRectangle_set_color(ProxyRectangle *self, ProxyColor *value, void *clos
     return 0;
 }
 
-PyObject *ProxyRectangle_repr(ProxyRectangle *self)
+PyObject *ProxyShape_repr(ProxyShape *self)
 {
-    ShapeRectangle *rect = (ShapeRectangle *)self->c_rect;
-    if (!rect)
+    Shape *shape = (Shape *)self->c_rect;
+    if (!shape)
     {
-        PyErr_SetString(PyExc_AttributeError, "Rectangle not assigned");
+        PyErr_SetString(PyExc_AttributeError, "Shape not assigned");
         return NULL;
     }
     char buf[128];
-    snprintf(buf, sizeof(buf), "Rectangle(size=(%f, %f), color=(%d, %d, %d, %d))",
-
-             (float)rect->size.x,
-             (float)rect->size.y,
-             (int)rect->color.R,
-             (int)rect->color.G,
-             (int)rect->color.B,
-             (int)rect->color.A);
+    snprintf(buf, sizeof(buf), "Shape(name=%s, size=(%f, %f), color=(%d, %d, %d, %d))",
+             get_shape_name(shape->type),
+             (float)shape->size.x,
+             (float)shape->size.y,
+             (int)shape->color.R,
+             (int)shape->color.G,
+             (int)shape->color.B,
+             (int)shape->color.A);
 
     return PyUnicode_FromFormat(buf);
 }
@@ -198,26 +198,26 @@ PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
     Vector3 *c_size = ((ProxyVector3 *)py_size)->c_obj;
     Color *c_color = ((ProxyColor *)py_color)->c_obj;
 
-    ShapeRectangle *rect = CreateRectangle(c_size, c_color);
+    Shape *rect = CreateShape(RECTANGLE, c_size, c_color);
 
-    ProxyRectangle *py_rect = (ProxyRectangle *)PyType_GenericNew(&ProxyRectangleType, NULL, NULL);
+    ProxyShape *py_rect = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
     py_rect->c_rect = rect;
 
     return (PyObject *)py_rect;
 }
 
-PyGetSetDef ProxyRectangle_getset[] = {
-    {"size", (getter)ProxyRectangle_get_size, (setter)ProxyRectangle_set_size, "size", NULL},
-    {"color", (getter)ProxyRectangle_get_color, (setter)ProxyRectangle_set_color, "R", NULL},
+PyGetSetDef ProxyShape_getset[] = {
+    {"size", (getter)ProxyShape_get_size, (setter)ProxyShape_set_size, "size", NULL},
+    {"color", (getter)ProxyShape_get_color, (setter)ProxyShape_set_color, "R", NULL},
     {NULL}};
 
-PyTypeObject ProxyRectangleType = {
+PyTypeObject ProxyShapeType = {
     PyVarObject_HEAD_INIT(NULL, 0)
-        .tp_name = "Aether.Rectangle",
-    .tp_basicsize = sizeof(ProxyRectangle),
+        .tp_name = "Aether.shape",
+    .tp_basicsize = sizeof(ProxyShape),
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_getset = ProxyRectangle_getset,
-    .tp_repr = (reprfunc)ProxyRectangle_repr,
+    .tp_getset = ProxyShape_getset,
+    .tp_repr = (reprfunc)ProxyShape_repr,
 
 };
 
@@ -237,12 +237,12 @@ PyMODINIT_FUNC PyInit_graphics(void)
 {
     if (PyType_Ready(&ProxyColorType) < 0)
         return NULL;
-    if (PyType_Ready(&ProxyRectangleType) < 0)
+    if (PyType_Ready(&ProxyShapeType) < 0)
         return NULL;
 
     PyObject *m = PyModule_Create(&graphic_module);
     Py_INCREF(&ProxyColorType);
     PyModule_AddObject(m, "ColorRGBA", (PyObject *)&ProxyColorType);
-    PyModule_AddObject(m, "Rectangle2D", (PyObject *)&ProxyRectangleType);
+    PyModule_AddObject(m, "Shape", (PyObject *)&ProxyShapeType);
     return m;
 }

@@ -6,7 +6,7 @@
 
 #define DEFAULT_FPS 60
 #define MAX_SCRIPTS 1024
-#define MAX_ITERATIONS 370
+#define MAX_ITERATIONS 10
 Module *modules[MAX_SCRIPTS];
 int MODULE_COUNT = 0;
 double FPS = 0;

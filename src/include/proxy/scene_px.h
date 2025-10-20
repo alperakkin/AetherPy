@@ -2,6 +2,7 @@
 #include <Python.h>
 #include "game/scene.h"
 #include "proxy/transform_px.h"
+#include "proxy/graphics_px.h"
 
 typedef struct
 {
