@@ -107,14 +107,14 @@ PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds)
 
 PyObject *ProxyShape_get_size(ProxyShape *self, void *closure)
 {
-    if (!self->c_rect)
+    if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
         return NULL;
     }
     ProxyVector3 *vect = (ProxyVector3 *)PyType_GenericNew(&ProxyVector3Type, NULL, NULL);
 
-    vect->c_obj = &self->c_rect->size;
+    vect->c_obj = &self->c_obj->size;
 
     return (PyObject *)vect;
 }
@@ -127,23 +127,23 @@ int ProxyShape_set_size(ProxyShape *self, ProxyVector3 *value, void *closure)
     }
     ProxyVector3 *vec = (ProxyVector3 *)value;
 
-    self->c_rect->size.x = vec->c_obj->x;
-    self->c_rect->size.y = vec->c_obj->y;
-    self->c_rect->size.z = vec->c_obj->z;
+    self->c_obj->size.x = vec->c_obj->x;
+    self->c_obj->size.y = vec->c_obj->y;
+    self->c_obj->size.z = vec->c_obj->z;
 
     return 0;
 }
 
 PyObject *ProxyShape_get_color(ProxyShape *self, void *closure)
 {
-    if (!self->c_rect)
+    if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
         return NULL;
     }
     ProxyColor *color = (ProxyColor *)PyType_GenericNew(&ProxyColorType, NULL, NULL);
 
-    color->c_obj = &self->c_rect->color;
+    color->c_obj = &self->c_obj->color;
 
     return (PyObject *)color;
 }
@@ -156,17 +156,17 @@ int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure)
     }
     ProxyColor *color = (ProxyColor *)value;
 
-    self->c_rect->color.R = color->c_obj->R;
-    self->c_rect->color.G = color->c_obj->G;
-    self->c_rect->color.B = color->c_obj->B;
-    self->c_rect->color.A = color->c_obj->A;
+    self->c_obj->color.R = color->c_obj->R;
+    self->c_obj->color.G = color->c_obj->G;
+    self->c_obj->color.B = color->c_obj->B;
+    self->c_obj->color.A = color->c_obj->A;
 
     return 0;
 }
 
 PyObject *ProxyShape_repr(ProxyShape *self)
 {
-    Shape *shape = (Shape *)self->c_rect;
+    Shape *shape = (Shape *)self->c_obj;
     if (!shape)
     {
         PyErr_SetString(PyExc_AttributeError, "Shape not assigned");
@@ -201,7 +201,7 @@ PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
     Shape *rect = CreateShape(RECTANGLE, c_size, c_color);
 
     ProxyShape *py_rect = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
-    py_rect->c_rect = rect;
+    py_rect->c_obj = rect;
 
     return (PyObject *)py_rect;
 }
