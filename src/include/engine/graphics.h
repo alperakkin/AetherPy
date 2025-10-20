@@ -20,10 +20,9 @@ typedef struct
 bool draw_gameobject(Screen *screen, GameObject *obj);
 bool draw_objects(Screen *screen);
 
-void draw_rectangle(SDL_Renderer *renderer, GameObject *obj);
-
 Screen *init_screen(Settings settings);
 bool render(Screen *screen);
 void destroy_screen(Screen *screen);
 bool draw_objects(Screen *screen);
 bool draw_gameobject(Screen *screen, GameObject *obj);
+void draw_rectangle(SDL_Renderer *renderer, GameObject *obj);

@@ -3,15 +3,10 @@
 bool draw_gameobject(Screen *screen, GameObject *obj)
 {
     if (!obj)
-    {
-        printf("ERROR: obj is NULL\n");
         return true;
-    }
+
     if (!obj->shape)
-    {
-        printf("WARNING: obj->shape is NULL for obj at %p (name: %s)\n", (void *)obj, obj->name ? obj->name : "(noname)");
         return true;
-    }
 
     switch (obj->shape->type)
     {
@@ -19,6 +14,7 @@ bool draw_gameobject(Screen *screen, GameObject *obj)
     {
 
         draw_rectangle(screen->renderer, obj);
+        break;
     }
 
     default:
@@ -31,8 +27,15 @@ bool draw_objects(Screen *screen)
 {
     for (int i = 0; i < object_register.count; i++)
     {
+        GameObject *obj = object_register.list[i];
 
-        if (draw_gameobject(screen, object_register.list[i]) == false)
+        if (!obj)
+        {
+            printf("WARNING: object_register.list[%d] is NULL\n", i);
+            continue;
+        }
+
+        if (!draw_gameobject(screen, obj))
             return false;
     }
     return true;

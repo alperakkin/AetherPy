@@ -8,13 +8,10 @@ Screen *init_screen(Settings settings)
     screen->width = settings.SCREEN_WIDTH;
     screen->height = settings.SCREEN_HEIGHT;
 
-    Color *background = malloc(sizeof(Color));
-    background->R = settings.background.R;
-    background->G = settings.background.G;
-    background->B = settings.background.B;
-    background->A = settings.background.A;
-
-    screen->background = *background;
+    screen->background.R = settings.background.R;
+    screen->background.G = settings.background.G;
+    screen->background.B = settings.background.B;
+    screen->background.A = settings.background.A;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -55,12 +52,13 @@ bool render(Screen *screen)
             return false;
     }
     SDL_SetRenderDrawColor(screen->renderer,
-                           screen->background.R,
-                           screen->background.G,
-                           screen->background.B,
-                           screen->background.A);
+                           (int)screen->background.R,
+                           (int)screen->background.G,
+                           (int)screen->background.B,
+                           (int)screen->background.A);
 
     SDL_RenderClear(screen->renderer);
+
     if (draw_objects(screen) == false)
         return false;
 

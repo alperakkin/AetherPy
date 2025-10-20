@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "libs/scripting.h"
 #include "engine/engine.h"
-#include "engine/graphics.h"
 
 #define DEFAULT_FPS 60
 #define MAX_SCRIPTS 1024
@@ -12,8 +11,9 @@ int MODULE_COUNT = 0;
 double FPS = 0;
 int iterations = 0;
 bool running = true;
+void init_settings(char *PATH, Settings *settings);
 
-void run(char *PATH)
+void init_settings(char *PATH, Settings *settings)
 {
     Color color;
     color.R = 0;
@@ -21,11 +21,16 @@ void run(char *PATH)
     color.B = 0;
     color.A = 0;
 
+    settings->SCREEN_WIDTH = DEFAULT_SCREEN_WIDTH;
+    settings->SCREEN_HEIGHT = DEFAULT_SCREEN_HEIGHT;
+    settings->background = color;
+    get_settings(PATH, settings);
+}
+
+void run(char *PATH)
+{
     Settings settings;
-    settings.SCREEN_WIDTH = DEFAULT_SCREEN_WIDTH;
-    settings.SCREEN_HEIGHT = DEFAULT_SCREEN_HEIGHT;
-    settings.background = color;
-    get_settings(PATH, &settings);
+    init_settings(PATH, &settings);
     FileList fl = scan_folder(join_scripts_path(PATH));
     load_modules(fl);
     start();
