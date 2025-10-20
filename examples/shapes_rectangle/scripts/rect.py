@@ -15,6 +15,7 @@ def create_rect():
 def start():
     global player
     CreateGameObject("player")
+    CreateGameObject("enemy")
     player = GetGameObject("player")
 
 
@@ -23,5 +24,4 @@ def setup():
     player.shape = rect
     player.position = Vector(10, 10, 0)
 
-def update():
-    print(player.shape)
+

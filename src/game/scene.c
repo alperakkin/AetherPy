@@ -4,14 +4,14 @@ ObjectRegister object_register = {NULL, 0};
 void RegisterGameObject(GameObject *obj)
 {
     GameObject **new_list = realloc(object_register.list,
-                                    sizeof(GameObject *) * (object_register.object_count + 1));
+                                    sizeof(GameObject *) * (object_register.count + 1));
     if (!new_list)
     {
         fprintf(stderr, "Memory allocation failed\n");
         return;
     }
     object_register.list = new_list;
-    object_register.list[object_register.object_count++] = obj;
+    object_register.list[object_register.count++] = obj;
 }
 
 GameObject *CreateGameObject(const char *name)
@@ -31,7 +31,7 @@ GameObject *CreateGameObject(const char *name)
 
 GameObject *GetGameObject(const char *name)
 {
-    for (int i = 0; i < object_register.object_count; i++)
+    for (int i = 0; i < object_register.count; i++)
     {
         GameObject *obj = object_register.list[i];
         if (strcmp(obj->name, name) == 0)

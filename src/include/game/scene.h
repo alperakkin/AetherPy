@@ -1,5 +1,3 @@
-#ifndef ENTITY_H
-#define ENTITY_H
 #pragma once
 #include <structmember.h>
 #include <stdlib.h>
@@ -13,17 +11,17 @@ typedef struct
     char *name;
     Vector3 position;
     Vector3 rotation;
-    void *shape;
+    Shape *shape;
 
 } GameObject;
 
 typedef struct
 {
     GameObject **list;
-    int object_count;
+    int count;
 } ObjectRegister;
 
 void RegisterGameObject(GameObject *obj);
 GameObject *CreateGameObject(const char *name);
 GameObject *GetGameObject(const char *name);
-#endif
+extern ObjectRegister object_register;

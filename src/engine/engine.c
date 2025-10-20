@@ -6,7 +6,7 @@
 
 #define DEFAULT_FPS 60
 #define MAX_SCRIPTS 1024
-#define MAX_ITERATIONS 10
+#define MAX_ITERATIONS 200
 Module *modules[MAX_SCRIPTS];
 int MODULE_COUNT = 0;
 double FPS = 0;
@@ -93,7 +93,11 @@ void game_loop(Screen *screen)
 
         clock_gettime(CLOCK_MONOTONIC, &start_time);
         update();
-        render(screen);
+        if (render(screen) == false)
+        {
+            printf("Render error\n");
+            running = false;
+        };
         clock_gettime(CLOCK_MONOTONIC, &end_time);
         delta_time = get_delta_time(start_time, end_time);
 

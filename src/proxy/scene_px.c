@@ -83,7 +83,7 @@ PyObject *ProxyGameObject_get_shape(ProxyGameObject *self, void *closure)
 
     return (PyObject *)shape;
 }
-int ProxyGameObject_set_shape(ProxyGameObject *self, ProxyVector3 *value, void *closure)
+int ProxyGameObject_set_shape(ProxyGameObject *self, ProxyShape *value, void *closure)
 {
     if (!PyObject_TypeCheck(value, &ProxyShapeType))
     {

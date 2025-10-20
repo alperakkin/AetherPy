@@ -45,6 +45,33 @@ Screen *init_screen(Settings settings)
     return screen;
 }
 
+bool draw_gameobject(GameObject *obj)
+{
+    if (!obj->shape)
+        return true;
+
+    switch (obj->shape->type)
+    {
+    case RECTANGLE:
+        printf("Drawing Rectangle [%s]\n", obj->name);
+        break;
+
+    default:
+        break;
+    }
+    return true;
+}
+
+bool draw_objects()
+{
+    for (int i = 0; i < object_register.count; i++)
+    {
+        if (draw_gameobject(object_register.list[i]) == false)
+            return false;
+    }
+    return true;
+}
+
 bool render(Screen *screen)
 {
     SDL_Event e;
@@ -58,6 +85,9 @@ bool render(Screen *screen)
                            screen->background.G,
                            screen->background.B,
                            screen->background.A);
+
+    if (draw_objects() == false)
+        return false;
     SDL_RenderClear(screen->renderer);
 
     SDL_RenderPresent(screen->renderer);
