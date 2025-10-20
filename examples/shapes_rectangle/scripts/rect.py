@@ -20,8 +20,11 @@ def start():
 
 
 def setup():
+    global player
     rect = create_rect()
     player.shape = rect
     player.position = Vector(10, 10, 0)
 
+def update():
+    player.position.y += 1
 

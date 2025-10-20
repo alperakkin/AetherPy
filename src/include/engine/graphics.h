@@ -18,7 +18,7 @@ typedef struct
 } Screen;
 
 Screen *init_screen(Settings settings);
-bool draw_gameobject(GameObject *obj);
-bool draw_objects();
+bool draw_gameobject(GameObject *obj, Screen *screen);
+bool draw_objects(Screen *screen);
 bool render(Screen *screen);
 void destroy_screen(Screen *screen);
