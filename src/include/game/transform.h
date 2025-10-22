@@ -7,7 +7,7 @@ typedef struct
     float y;
     float z;
 
-} Vector3;
+} Vector3Prop;
 
-Vector3 *CreateVector3(float x, float y, float z);
+Vector3Prop *CreateVector3Prop(float x, float y, float z);
 #endif

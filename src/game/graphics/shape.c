@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "game/graphics/shape.h"
 
-Shape *CreateShape(ShapeType type, Vector3 *size, Color *color)
+Shape *CreateShape(ShapeType type, Vector3Prop *size, ColorProp *color)
 {
 
     Shape *obj = malloc(sizeof(Shape));

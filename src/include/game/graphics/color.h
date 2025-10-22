@@ -7,6 +7,6 @@ typedef struct
     int G;
     int B;
     int A;
-} Color;
+} ColorProp;
 
-Color *CreateColor(int R, int G, int B, int A);
+ColorProp *CreateColor(int R, int G, int B, int A);

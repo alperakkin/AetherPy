@@ -13,7 +13,7 @@ bool draw_gameobject(Screen *screen, GameObject *obj)
     case RECTANGLE:
     {
 
-        draw_rectangle(screen->renderer, obj);
+        draw_rectangle(obj);
         break;
     }
 

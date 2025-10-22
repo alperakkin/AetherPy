@@ -26,7 +26,8 @@ GameObject *CreateGameObject(const char *name)
     obj->rotation.y = 0.0f;
     obj->rotation.z = 0.0f;
 
-    obj->shape = CreateShape(RECTANGLE, &(Vector3){0, 0, 0}, &(Color){255, 255, 255, 255});
+    // Creates a dummy shape for initialization
+    obj->shape = CreateShape(EMPTY, &(Vector3Prop){0, 0, 0}, &(ColorProp){255, 255, 255, 255});
     RegisterGameObject(obj);
     return obj;
 }

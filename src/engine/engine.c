@@ -15,7 +15,7 @@ void init_settings(char *PATH, Settings *settings);
 
 void init_settings(char *PATH, Settings *settings)
 {
-    Color color;
+    ColorProp color;
     color.R = 0;
     color.G = 0;
     color.B = 0;

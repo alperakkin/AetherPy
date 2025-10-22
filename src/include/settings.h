@@ -5,6 +5,6 @@ typedef struct
 {
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;
-    Color background;
+    ColorProp background;
 
 } Settings;

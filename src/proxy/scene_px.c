@@ -1,7 +1,7 @@
 #include "proxy/scene_px.h"
 #include "libs/utils.h"
 PyTypeObject ProxyGameObjectType;
-PyTypeObject ProxyVector3Type;
+PyTypeObject ProxyVector3PropType;
 
 PyMemberDef ProxyGameObject_members[] = {
     {"name", T_STRING, offsetof(GameObject, name), 0, "Name"},
@@ -14,20 +14,20 @@ PyObject *ProxyGameObject_get_position(ProxyGameObject *self, void *closure)
         PyErr_SetString(PyExc_AttributeError, "GameObject Not Exists!");
         return NULL;
     }
-    ProxyVector3 *vec = (ProxyVector3 *)PyType_GenericNew(&ProxyVector3Type, NULL, NULL);
+    ProxyVector3Prop *vec = (ProxyVector3Prop *)PyType_GenericNew(&ProxyVector3PropType, NULL, NULL);
 
     vec->c_obj = &self->c_obj->position;
 
     return (PyObject *)vec;
 }
-int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3 *value, void *closure)
+int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3Type))
+    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
     {
-        PyErr_SetString(PyExc_TypeError, "Expected Vector3");
+        PyErr_SetString(PyExc_TypeError, "Expected Vector3Prop");
         return -1;
     }
-    ProxyVector3 *vec = (ProxyVector3 *)value;
+    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
 
     self->c_obj->position.x = vec->c_obj->x;
     self->c_obj->position.y = vec->c_obj->y;
@@ -38,8 +38,8 @@ int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3 *value, voi
 
 PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure)
 {
-    ProxyVector3 *vec = PyObject_New(ProxyVector3, &ProxyVector3Type);
-    vec->c_obj = PyMem_Malloc(sizeof(Vector3));
+    ProxyVector3Prop *vec = PyObject_New(ProxyVector3Prop, &ProxyVector3PropType);
+    vec->c_obj = PyMem_Malloc(sizeof(Vector3Prop));
 
     double x_rad = normalize_rad(self->c_obj->rotation.x);
     double y_rad = normalize_rad(self->c_obj->rotation.y);
@@ -50,14 +50,14 @@ PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure)
     return (PyObject *)vec;
 }
 
-int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3 *value, void *closure)
+int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3Type))
+    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
     {
-        PyErr_SetString(PyExc_TypeError, "Expected Vector3");
+        PyErr_SetString(PyExc_TypeError, "Expected Vector3Prop");
         return -1;
     }
-    ProxyVector3 *vec = (ProxyVector3 *)value;
+    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
 
     double x_deg = normalize_deg(vec->c_obj->x);
     double y_deg = normalize_deg(vec->c_obj->y);

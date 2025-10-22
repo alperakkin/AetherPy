@@ -1,6 +1,6 @@
 #include "engine/graphics.h"
 
-void draw_rectangle(SDL_Renderer *renderer, GameObject *obj)
+void draw_rectangle(GameObject *obj)
 {
 
     if (!obj)
@@ -12,16 +12,16 @@ void draw_rectangle(SDL_Renderer *renderer, GameObject *obj)
     if (!obj->shape)
         return;
 
-    SDL_Rect rect;
-    rect.w = (int)obj->shape->size.x;
-    rect.h = (int)obj->shape->size.y;
-    rect.x = (int)obj->position.x;
-    rect.y = (int)obj->position.y;
-    SDL_SetRenderDrawColor(renderer,
-                           (int)obj->shape->color.R,
-                           (int)obj->shape->color.G,
-                           (int)obj->shape->color.B,
-                           (int)obj->shape->color.A);
+    DrawRectangle(
+        (int)obj->position.x,
+        (int)obj->position.y,
+        (int)obj->shape->size.x,
+        (int)obj->shape->size.y,
+        (Color){
+            obj->shape->color.R,
+            obj->shape->color.G,
+            obj->shape->color.B,
+            obj->shape->color.A,
 
-    SDL_RenderFillRect(renderer, &rect);
+        });
 }

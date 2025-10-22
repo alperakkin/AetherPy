@@ -52,7 +52,7 @@ int ProxyColor_setA(ProxyColor *self, PyObject *value, void *closure)
 }
 PyObject *ProxyColor_repr(ProxyColor *self)
 {
-    Color *color = (Color *)self->c_obj;
+    ColorProp *color = (ColorProp *)self->c_obj;
     if (!color)
     {
         PyErr_SetString(PyExc_AttributeError, "Color not assigned");
@@ -96,7 +96,7 @@ PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "iiii", kwlist, &R, &G, &B, &A))
         return NULL;
 
-    Color *c_color = CreateColor(R, G, B, A);
+    ColorProp *c_color = CreateColor(R, G, B, A);
 
     ProxyColor *py_color = (ProxyColor *)PyType_GenericNew(&ProxyColorType, NULL, NULL);
 
@@ -112,20 +112,20 @@ PyObject *ProxyShape_get_size(ProxyShape *self, void *closure)
         PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
         return NULL;
     }
-    ProxyVector3 *vect = (ProxyVector3 *)PyType_GenericNew(&ProxyVector3Type, NULL, NULL);
+    ProxyVector3Prop *vect = (ProxyVector3Prop *)PyType_GenericNew(&ProxyVector3PropType, NULL, NULL);
 
     vect->c_obj = &self->c_obj->size;
 
     return (PyObject *)vect;
 }
-int ProxyShape_set_size(ProxyShape *self, ProxyVector3 *value, void *closure)
+int ProxyShape_set_size(ProxyShape *self, ProxyVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3Type))
+    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Vector");
         return -1;
     }
-    ProxyVector3 *vec = (ProxyVector3 *)value;
+    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
 
     self->c_obj->size.x = vec->c_obj->x;
     self->c_obj->size.y = vec->c_obj->y;
@@ -195,8 +195,8 @@ PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_size, &py_color))
         return NULL;
 
-    Vector3 *c_size = ((ProxyVector3 *)py_size)->c_obj;
-    Color *c_color = ((ProxyColor *)py_color)->c_obj;
+    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
 
     Shape *rect = CreateShape(RECTANGLE, c_size, c_color);
 

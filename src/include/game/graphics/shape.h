@@ -4,14 +4,15 @@
 
 typedef enum
 {
+    EMPTY,
     RECTANGLE,
 } ShapeType;
 typedef struct
 {
-    Vector3 size;
-    Color color;
+    Vector3Prop size;
+    ColorProp color;
     ShapeType type;
 } Shape;
 
-Shape *CreateShape(ShapeType type, Vector3 *size, Color *color);
+Shape *CreateShape(ShapeType type, Vector3Prop *size, ColorProp *color);
 char *get_shape_name(ShapeType type);

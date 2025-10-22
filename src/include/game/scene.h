@@ -9,8 +9,8 @@
 typedef struct
 {
     char *name;
-    Vector3 position;
-    Vector3 rotation;
+    Vector3Prop position;
+    Vector3Prop rotation;
     Shape *shape;
 
 } GameObject;
