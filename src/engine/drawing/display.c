@@ -12,7 +12,7 @@ Screen *init_screen(Settings settings)
     screen->background.G = settings.background.G;
     screen->background.B = settings.background.B;
     screen->background.A = settings.background.A;
-
+    SetTraceLogLevel(LOG_NONE);
     InitWindow(screen->width, screen->height, "Aether Game Engine");
 
     return screen;

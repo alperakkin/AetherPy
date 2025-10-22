@@ -8,6 +8,7 @@
 
 #define DEFAULT_SCREEN_WIDTH 640
 #define DEFAULT_SCREEN_HEIGHT 480
+
 typedef struct
 {
     int width;
