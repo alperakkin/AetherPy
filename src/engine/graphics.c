@@ -16,7 +16,10 @@ bool draw_gameobject(Screen *screen, GameObject *obj)
         draw_rectangle(obj);
         break;
     }
-
+    case CIRCLE:
+        draw_circle(obj);
+    case TEXT:
+        draw_text(obj);
     default:
         break;
     }

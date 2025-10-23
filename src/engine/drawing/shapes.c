@@ -25,3 +25,34 @@ void draw_rectangle(GameObject *obj)
 
         });
 }
+
+void draw_circle(GameObject *obj)
+{
+    DrawCircle(
+        (int)obj->position.x,
+        (int)obj->position.y,
+        (int)obj->shape->size.x,
+        (Color){
+            obj->shape->color.R,
+            obj->shape->color.G,
+            obj->shape->color.B,
+            obj->shape->color.A,
+
+        });
+}
+
+void draw_text(GameObject *obj)
+{
+    DrawText(
+        obj->shape->value,
+        (int)obj->position.x,
+        (int)obj->position.y,
+        (int)obj->shape->size.x,
+        (Color){
+            obj->shape->color.R,
+            obj->shape->color.G,
+            obj->shape->color.B,
+            obj->shape->color.A,
+
+        });
+}

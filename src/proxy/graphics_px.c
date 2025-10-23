@@ -206,9 +206,53 @@ PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
     return (PyObject *)py_rect;
 }
 
+PyObject *py_createCircle(PyObject *self, PyObject *args, PyObject *kwds)
+{
+    PyObject *py_size = NULL;
+    PyObject *py_color = NULL;
+
+    static char *kwlist[] = {"size", "color", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_size, &py_color))
+        return NULL;
+
+    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
+
+    Shape *circle = CreateShape(CIRCLE, c_size, c_color);
+
+    ProxyShape *py_circle = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    py_circle->c_obj = circle;
+
+    return (PyObject *)py_circle;
+}
+
+PyObject *py_createText(PyObject *self, PyObject *args, PyObject *kwds)
+{
+    PyObject *py_size = NULL;
+    PyObject *py_color = NULL;
+    char *py_text = NULL;
+
+    static char *kwlist[] = {"text", "size", "color", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "sOO", kwlist, &py_text, &py_size, &py_color))
+        return NULL;
+
+    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
+    char *value = (char *)py_text;
+
+    Shape *c_text = CreateShape(TEXT, c_size, c_color);
+    c_text->value = strdup(value);
+    ProxyShape *py_text_obj = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    py_text_obj->c_obj = c_text;
+
+    return (PyObject *)py_text_obj;
+}
+
 PyGetSetDef ProxyShape_getset[] = {
     {"size", (getter)ProxyShape_get_size, (setter)ProxyShape_set_size, "size", NULL},
-    {"color", (getter)ProxyShape_get_color, (setter)ProxyShape_set_color, "R", NULL},
+    {"color", (getter)ProxyShape_get_color, (setter)ProxyShape_set_color, "color", NULL},
     {NULL}};
 
 PyTypeObject ProxyShapeType = {
@@ -224,6 +268,8 @@ PyTypeObject ProxyShapeType = {
 PyMethodDef GraphicsMethods[] = {
     {"Color", (PyCFunction)py_createColor, METH_VARARGS | METH_KEYWORDS, "Create Color Object"},
     {"Rectangle", (PyCFunction)py_createRectangle, METH_VARARGS | METH_KEYWORDS, "Create Rectangle Object"},
+    {"Circle", (PyCFunction)py_createCircle, METH_VARARGS | METH_KEYWORDS, "Create Circle Object"},
+    {"Text", (PyCFunction)py_createText, METH_VARARGS | METH_KEYWORDS, "Create Text Object"},
     {NULL, NULL, 0, NULL}};
 
 PyModuleDef graphic_module = {

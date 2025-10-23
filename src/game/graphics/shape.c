@@ -19,6 +19,10 @@ char *get_shape_name(ShapeType type)
     {
     case RECTANGLE:
         return "Rectangle";
+    case CIRCLE:
+        return "Circle";
+    case TEXT:
+        return "Text";
     default:
         return "N/A";
     }

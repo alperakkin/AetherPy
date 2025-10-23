@@ -25,3 +25,5 @@ void destroy_screen(Screen *screen);
 bool draw_objects(Screen *screen);
 bool draw_gameobject(Screen *screen, GameObject *obj);
 void draw_rectangle(GameObject *obj);
+void draw_circle(GameObject *obj);
+void draw_text(GameObject *obj);

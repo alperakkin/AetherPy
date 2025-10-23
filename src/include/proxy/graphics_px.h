@@ -41,4 +41,6 @@ int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure);
 PyObject *ProxyShape_repr(ProxyShape *self);
 
 PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds);
+PyObject *py_createCircle(PyObject *self, PyObject *args, PyObject *kwds);
+PyObject *py_createText(PyObject *self, PyObject *args, PyObject *kwds);
 PyMODINIT_FUNC PyInit_graphics(void);
