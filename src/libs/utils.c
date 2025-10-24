@@ -57,7 +57,7 @@ void get_settings(const char *path, Settings *settings)
 
     fclose(file);
 
-    printf("Width=%d, Height=%d, BG=(%d,%d,%d,%d)\n",
+    printf("SCREEN [Width=%d, Height=%d, BG=(%d,%d,%d,%d)]\n",
            settings->SCREEN_WIDTH, settings->SCREEN_HEIGHT,
            settings->background.R,
            settings->background.G,

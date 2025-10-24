@@ -8,7 +8,7 @@ typedef struct
 {
     PyObject_HEAD GameObject *c_obj;
 } ProxyGameObject;
-
+extern PyTypeObject ProxyGameObjectType;
 PyObject *ProxyGameObject_get_position(ProxyGameObject *self, void *closure);
 
 int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3Prop *value, void *closure);

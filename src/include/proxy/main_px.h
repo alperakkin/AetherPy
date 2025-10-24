@@ -3,5 +3,6 @@
 #include "proxy/scene_px.h"
 #include "proxy/transform_px.h"
 #include "proxy/graphics_px.h"
+#include "proxy/controls_px.h"
 
 PyMODINIT_FUNC PyInit_Aether(void);

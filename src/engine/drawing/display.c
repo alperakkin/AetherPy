@@ -14,7 +14,6 @@ Screen *init_screen(Settings settings)
     screen->background.A = settings.background.A;
     SetTraceLogLevel(LOG_NONE);
     InitWindow(screen->width, screen->height, "Aether Game Engine");
-
     return screen;
 }
 
@@ -25,6 +24,7 @@ bool render(Screen *screen)
         return false;
 
     BeginDrawing();
+
     ClearBackground((Color){
         screen->background.R,
         screen->background.G,
@@ -32,9 +32,13 @@ bool render(Screen *screen)
         screen->background.A,
     });
 
+    controls();
+
     if (draw_objects(screen) == false)
         return false;
+
     EndDrawing();
+
     return true;
 }
 void destroy_screen(Screen *screen)

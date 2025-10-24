@@ -5,6 +5,7 @@
 #include "game/graphics/color.h"
 #include "game/scene.h"
 #include "settings.h"
+#include "engine/input_controls.h"
 
 #define DEFAULT_SCREEN_WIDTH 640
 #define DEFAULT_SCREEN_HEIGHT 480

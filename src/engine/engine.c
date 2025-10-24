@@ -5,7 +5,7 @@
 
 #define DEFAULT_FPS 60
 #define MAX_SCRIPTS 1024
-#define MAX_ITERATIONS 1000
+#define MAX_ITERATIONS 10000
 Module *modules[MAX_SCRIPTS];
 int MODULE_COUNT = 0;
 double FPS = 0;
@@ -29,15 +29,17 @@ void init_settings(char *PATH, Settings *settings)
 
 void run(char *PATH)
 {
+
     Settings settings;
     init_settings(PATH, &settings);
+
     FileList fl = scan_folder(join_scripts_path(PATH));
+
     load_modules(fl);
     start();
     setup();
     Screen *screen = init_screen(settings);
     game_loop(screen);
-
     destroy_screen(screen);
 }
 
@@ -98,11 +100,12 @@ void game_loop(Screen *screen)
 
         clock_gettime(CLOCK_MONOTONIC, &start_time);
         update();
+
         if (render(screen) == false)
         {
-            printf("Render error\n");
             running = false;
         };
+
         clock_gettime(CLOCK_MONOTONIC, &end_time);
         delta_time = get_delta_time(start_time, end_time);
 

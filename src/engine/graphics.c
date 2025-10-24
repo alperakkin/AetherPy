@@ -17,7 +17,11 @@ bool draw_gameobject(Screen *screen, GameObject *obj)
         break;
     }
     case CIRCLE:
+    {
         draw_circle(obj);
+        break;
+    }
+
     case TEXT:
         draw_text(obj);
     default:
@@ -30,6 +34,7 @@ bool draw_objects(Screen *screen)
 {
     for (int i = 0; i < object_register.count; i++)
     {
+
         GameObject *obj = object_register.list[i];
 
         if (!obj)
