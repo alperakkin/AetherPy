@@ -4,6 +4,7 @@ from Aether.graphics import Color
 from Aether.graphics import Circle
 from Aether.controls import InputControl, POS_X, POS_Y
 player = None
+finish = None
 
 
 
@@ -19,7 +20,7 @@ def define_controls(player):
         "w": {"on": POS_Y, "delta":-1},
         "a": {"on": POS_X, "delta":-1},
         "s": {"on": POS_Y, "delta":1},
-        "d": {"on": POS_X, "delta":1},
+        "d": {"on": POS_X, "delta":0.5},
     }
     InputControl(object=player, ctrl=control_dict)
 
@@ -29,8 +30,9 @@ def start():
 
 def setup():
 
-    global player
+    global player, finish
     player = GetGameObject("player")
+    finish = GetGameObject("finish")
     c = create_shape()
     player.shape = c
     player.position = Vector(10, 10, 0)
@@ -39,6 +41,7 @@ def setup():
 
 
 def update():
-    player.position.x -= .1
+    if player.position.x > 0 and player.position.x < finish.position.x:
+        player.position.x -= .1
 
 
