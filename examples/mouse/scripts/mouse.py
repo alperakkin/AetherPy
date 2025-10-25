@@ -3,9 +3,9 @@ from Aether.transform import Vector
 from Aether.graphics import Color
 from Aether.graphics import Rectangle
 from Aether.controls import (InputControl,
-                              POS_X, POS_Y,
-                              W, A, S, D,
-                              KEYBOARD)
+                             MOUSE,
+                             MOUSE_MOVE, MOUSE_CLICK,
+                             POS_ALL, POS_X)
 player = None
 
 
@@ -19,12 +19,10 @@ def create_rect():
 
 def define_controls(player):
     control_dict = {
-        W: {"on": POS_Y, "delta":-1},
-        A: {"on": POS_X, "delta":-1},
-        S: {"on": POS_Y, "delta":1},
-        D: {"on": POS_X, "delta":1},
+        MOUSE_MOVE: {"on": POS_ALL, "delta":0},
+        MOUSE_CLICK: {"on": POS_X, "delta":1},
     }
-    InputControl(object=player, ctrl=control_dict, ctrl_type=KEYBOARD)
+    InputControl(object=player, ctrl=control_dict, ctrl_type=MOUSE)
 
 
 def start():

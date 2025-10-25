@@ -14,12 +14,13 @@ void RegisterControl(ControlProp *obj)
     control_register.list[control_register.count++] = obj;
 }
 
-ControlProp *CreateControl(GameObject *obj, ControlBinding *bindings, int count)
+ControlProp *CreateControl(GameObject *obj, ControlBinding *bindings, int count, ControlType *control_type)
 {
     ControlProp *ctrl = malloc(sizeof(ControlProp));
     ctrl->object = obj;
     ctrl->binding_count = count;
     ctrl->bindings = malloc(sizeof(ControlBinding) * count);
+    ctrl->type = control_type;
     memcpy(ctrl->bindings, bindings, sizeof(ControlBinding) * count);
 
     RegisterControl(ctrl);

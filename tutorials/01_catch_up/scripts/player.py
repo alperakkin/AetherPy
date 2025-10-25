@@ -2,7 +2,9 @@ from Aether.scene import CreateGameObject, GetGameObject
 from Aether.transform import Vector
 from Aether.graphics import Color
 from Aether.graphics import Circle
-from Aether.controls import InputControl, POS_X, POS_Y
+from Aether.controls import (InputControl,
+                             W,A,S,D,
+                             POS_X, POS_Y, KEYBOARD)
 player = None
 finish = None
 
@@ -17,12 +19,12 @@ def create_shape():
 
 def define_controls(player):
     control_dict = {
-        "w": {"on": POS_Y, "delta":-1},
-        "a": {"on": POS_X, "delta":-1},
-        "s": {"on": POS_Y, "delta":1},
-        "d": {"on": POS_X, "delta":0.5},
+        W: {"on": POS_Y, "delta":-1},
+        A: {"on": POS_X, "delta":-1},
+        S: {"on": POS_Y, "delta":1},
+        D: {"on": POS_X, "delta":0.5},
     }
-    InputControl(object=player, ctrl=control_dict)
+    InputControl(object=player, ctrl=control_dict, ctrl_type=KEYBOARD)
 
 
 def start():

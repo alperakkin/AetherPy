@@ -3,27 +3,26 @@
 #include "engine/input_controls.h"
 #include "ctype.h"
 
-int map_raylib_char(char c)
+int map_raylib_keys(KeyCode key)
 {
-    switch (tolower(c))
+    switch (key)
     {
-    case 'w':
+    case W:
         return KEY_W;
-    case 'a':
+    case A:
         return KEY_A;
-    case 's':
+    case S:
         return KEY_S;
-    case 'd':
+    case D:
         return KEY_D;
     default:
         return -1;
     }
 }
 
-void control_action(ControlBinding *binding, GameObject *obj)
+void control_keyboard(ControlBinding *binding, GameObject *obj)
 {
-    int key = map_raylib_char(binding->key);
-
+    int key = map_raylib_keys(binding->key);
     if (IsKeyDown(key))
     {
         switch (binding->property)
@@ -53,6 +52,27 @@ void control_action(ControlBinding *binding, GameObject *obj)
     }
 }
 
+void control_mouse(ControlBinding *binding, GameObject *obj)
+{
+    printf("Key is: %d\n", binding->key);
+}
+
+void control_action(ControlBinding *binding, GameObject *obj, ControlType type)
+{
+
+    switch (type)
+    {
+    case KEYBOARD:
+        control_keyboard(binding, obj);
+        break;
+    case MOUSE:
+        control_mouse(binding, obj);
+        break;
+    default:
+        break;
+    }
+}
+
 void controls()
 {
 
@@ -63,7 +83,8 @@ void controls()
         {
             ControlBinding *binding = &control->bindings[b_ind];
             GameObject *obj = control->object;
-            control_action(binding, obj);
+            ControlType type = control->type;
+            control_action(binding, obj, type);
         }
     }
 }
