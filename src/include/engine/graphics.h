@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "game/graphics/color.h"
 #include "game/scene.h"
+#include "game/game.h"
 #include "settings.h"
 #include "engine/input_controls.h"
 
@@ -21,6 +22,7 @@ bool draw_gameobject(Screen *screen, GameObject *obj);
 bool draw_objects(Screen *screen);
 
 Screen *init_screen(Settings settings);
+void init_pause_frame(Screen *screen);
 bool render(Screen *screen);
 void destroy_screen(Screen *screen);
 bool draw_objects(Screen *screen);

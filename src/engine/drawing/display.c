@@ -16,12 +16,25 @@ Screen *init_screen(Settings settings)
     InitWindow(screen->width, screen->height, "Aether Game Engine");
     return screen;
 }
+static RenderTexture2D pause_frame;
+void init_pause_frame(Screen *screen)
+{
+    pause_frame = LoadRenderTexture(screen->width, screen->height);
+}
 
 bool render(Screen *screen)
 {
 
     if (WindowShouldClose())
         return false;
+
+    if (game_state.paused)
+    {
+        BeginDrawing();
+        DrawTexture(pause_frame.texture, 0, 0, WHITE);
+        EndDrawing();
+        return true;
+    }
 
     BeginDrawing();
 

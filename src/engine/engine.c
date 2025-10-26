@@ -1,6 +1,3 @@
-#include <time.h>
-#include <stdbool.h>
-#include "libs/scripting.h"
 #include "engine/engine.h"
 
 #define DEFAULT_FPS 60
@@ -71,6 +68,12 @@ void setup()
 
 void update()
 {
+    if (game_state.paused == true)
+    {
+        printf("Game paused\n");
+        return;
+    }
+
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
         call_game_function(modules[i]->update_func);
