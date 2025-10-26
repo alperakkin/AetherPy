@@ -1,7 +1,7 @@
 #include "libs/scripting.h"
-#include "proxy/main_px.h"
-#include "proxy/scene_px.h"
-#include "proxy/transform_px.h"
+#include "api/main_api.h"
+#include "api/scene_api.h"
+#include "api/transform_api.h"
 
 void initialize_scripting_engine()
 {

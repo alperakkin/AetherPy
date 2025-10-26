@@ -1,56 +1,56 @@
-#include "proxy/graphics_px.h"
+#include "api/graphics_api.h"
 
-PyTypeObject ProxyColorType;
-PyTypeObject ProxyShapeType;
+PyTypeObject apiColorType;
+PyTypeObject apiShapeType;
 
-PyObject *ProxyColor_getR(ProxyColor *self, void *closure)
+PyObject *apiColor_getR(apiColor *self, void *closure)
 {
     return PyFloat_FromDouble(self->c_obj->R);
 }
 
-int ProxyColor_setR(ProxyColor *self, PyObject *value, void *closure)
+int apiColor_setR(apiColor *self, PyObject *value, void *closure)
 {
     double v = PyFloat_AsDouble(value);
     self->c_obj->R = (int)v;
     return 0;
 }
 
-PyObject *ProxyColor_getG(ProxyColor *self, void *closure)
+PyObject *apiColor_getG(apiColor *self, void *closure)
 {
     return PyFloat_FromDouble(self->c_obj->G);
 }
 
-int ProxyColor_setG(ProxyColor *self, PyObject *value, void *closure)
+int apiColor_setG(apiColor *self, PyObject *value, void *closure)
 {
     double v = PyFloat_AsDouble(value);
     self->c_obj->G = (int)v;
     return 0;
 }
 
-PyObject *ProxyColor_getB(ProxyColor *self, void *closure)
+PyObject *apiColor_getB(apiColor *self, void *closure)
 {
     return PyFloat_FromDouble(self->c_obj->B);
 }
 
-int ProxyColor_setB(ProxyColor *self, PyObject *value, void *closure)
+int apiColor_setB(apiColor *self, PyObject *value, void *closure)
 {
     double v = PyFloat_AsDouble(value);
     self->c_obj->B = (int)v;
     return 0;
 }
 
-PyObject *ProxyColor_getA(ProxyColor *self, void *closure)
+PyObject *apiColor_getA(apiColor *self, void *closure)
 {
     return PyFloat_FromDouble(self->c_obj->A);
 }
 
-int ProxyColor_setA(ProxyColor *self, PyObject *value, void *closure)
+int apiColor_setA(apiColor *self, PyObject *value, void *closure)
 {
     double v = PyFloat_AsDouble(value);
     self->c_obj->A = (int)v;
     return 0;
 }
-PyObject *ProxyColor_repr(ProxyColor *self)
+PyObject *apiColor_repr(apiColor *self)
 {
     ColorProp *color = (ColorProp *)self->c_obj;
     if (!color)
@@ -68,20 +68,20 @@ PyObject *ProxyColor_repr(ProxyColor *self)
     return PyUnicode_FromFormat(buf);
 }
 
-PyGetSetDef ProxyColor_getset[] = {
-    {"R", (getter)ProxyColor_getR, (setter)ProxyColor_setR, "R", NULL},
-    {"G", (getter)ProxyColor_getG, (setter)ProxyColor_setG, "G", NULL},
-    {"B", (getter)ProxyColor_getB, (setter)ProxyColor_setB, "B", NULL},
-    {"A", (getter)ProxyColor_getA, (setter)ProxyColor_setA, "A", NULL},
+PyGetSetDef apiColor_getset[] = {
+    {"R", (getter)apiColor_getR, (setter)apiColor_setR, "R", NULL},
+    {"G", (getter)apiColor_getG, (setter)apiColor_setG, "G", NULL},
+    {"B", (getter)apiColor_getB, (setter)apiColor_setB, "B", NULL},
+    {"A", (getter)apiColor_getA, (setter)apiColor_setA, "A", NULL},
     {NULL}};
 
-PyTypeObject ProxyColorType = {
+PyTypeObject apiColorType = {
     PyVarObject_HEAD_INIT(NULL, 0)
         .tp_name = "Aether.Color",
-    .tp_basicsize = sizeof(ProxyColor),
+    .tp_basicsize = sizeof(apiColor),
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_getset = ProxyColor_getset,
-    .tp_repr = (reprfunc)ProxyColor_repr,
+    .tp_getset = apiColor_getset,
+    .tp_repr = (reprfunc)apiColor_repr,
 
 };
 
@@ -98,34 +98,34 @@ PyObject *py_createColor(PyObject *self, PyObject *args, PyObject *kwds)
 
     ColorProp *c_color = CreateColor(R, G, B, A);
 
-    ProxyColor *py_color = (ProxyColor *)PyType_GenericNew(&ProxyColorType, NULL, NULL);
+    apiColor *py_color = (apiColor *)PyType_GenericNew(&apiColorType, NULL, NULL);
 
     py_color->c_obj = c_color;
 
     return (PyObject *)py_color;
 }
 
-PyObject *ProxyShape_get_size(ProxyShape *self, void *closure)
+PyObject *apiShape_get_size(apiShape *self, void *closure)
 {
     if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
         return NULL;
     }
-    ProxyVector3Prop *vect = (ProxyVector3Prop *)PyType_GenericNew(&ProxyVector3PropType, NULL, NULL);
+    apiVector3Prop *vect = (apiVector3Prop *)PyType_GenericNew(&apiVector3PropType, NULL, NULL);
 
     vect->c_obj = &self->c_obj->size;
 
     return (PyObject *)vect;
 }
-int ProxyShape_set_size(ProxyShape *self, ProxyVector3Prop *value, void *closure)
+int apiShape_set_size(apiShape *self, apiVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
+    if (!PyObject_TypeCheck(value, &apiVector3PropType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Vector");
         return -1;
     }
-    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
+    apiVector3Prop *vec = (apiVector3Prop *)value;
 
     self->c_obj->size.x = vec->c_obj->x;
     self->c_obj->size.y = vec->c_obj->y;
@@ -134,27 +134,27 @@ int ProxyShape_set_size(ProxyShape *self, ProxyVector3Prop *value, void *closure
     return 0;
 }
 
-PyObject *ProxyShape_get_color(ProxyShape *self, void *closure)
+PyObject *apiShape_get_color(apiShape *self, void *closure)
 {
     if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "Rectangle Not Exists!");
         return NULL;
     }
-    ProxyColor *color = (ProxyColor *)PyType_GenericNew(&ProxyColorType, NULL, NULL);
+    apiColor *color = (apiColor *)PyType_GenericNew(&apiColorType, NULL, NULL);
 
     color->c_obj = &self->c_obj->color;
 
     return (PyObject *)color;
 }
-int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure)
+int apiShape_set_color(apiShape *self, apiColor *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyColorType))
+    if (!PyObject_TypeCheck(value, &apiColorType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Color");
         return -1;
     }
-    ProxyColor *color = (ProxyColor *)value;
+    apiColor *color = (apiColor *)value;
 
     self->c_obj->color.R = color->c_obj->R;
     self->c_obj->color.G = color->c_obj->G;
@@ -164,7 +164,7 @@ int ProxyShape_set_color(ProxyShape *self, ProxyColor *value, void *closure)
     return 0;
 }
 
-PyObject *ProxyShape_repr(ProxyShape *self)
+PyObject *apiShape_repr(apiShape *self)
 {
     Shape *shape = (Shape *)self->c_obj;
     if (!shape)
@@ -195,12 +195,12 @@ PyObject *py_createRectangle(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_size, &py_color))
         return NULL;
 
-    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
-    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
+    Vector3Prop *c_size = ((apiVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((apiColor *)py_color)->c_obj;
 
     Shape *rect = CreateShape(RECTANGLE, c_size, c_color);
 
-    ProxyShape *py_rect = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    apiShape *py_rect = (apiShape *)PyType_GenericNew(&apiShapeType, NULL, NULL);
     py_rect->c_obj = rect;
 
     return (PyObject *)py_rect;
@@ -216,12 +216,12 @@ PyObject *py_createCircle(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO", kwlist, &py_size, &py_color))
         return NULL;
 
-    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
-    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
+    Vector3Prop *c_size = ((apiVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((apiColor *)py_color)->c_obj;
 
     Shape *circle = CreateShape(CIRCLE, c_size, c_color);
 
-    ProxyShape *py_circle = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    apiShape *py_circle = (apiShape *)PyType_GenericNew(&apiShapeType, NULL, NULL);
     py_circle->c_obj = circle;
 
     return (PyObject *)py_circle;
@@ -238,30 +238,30 @@ PyObject *py_createText(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "sOO", kwlist, &py_text, &py_size, &py_color))
         return NULL;
 
-    Vector3Prop *c_size = ((ProxyVector3Prop *)py_size)->c_obj;
-    ColorProp *c_color = ((ProxyColor *)py_color)->c_obj;
+    Vector3Prop *c_size = ((apiVector3Prop *)py_size)->c_obj;
+    ColorProp *c_color = ((apiColor *)py_color)->c_obj;
     char *value = (char *)py_text;
 
     Shape *c_text = CreateShape(TEXT, c_size, c_color);
     c_text->value = strdup(value);
-    ProxyShape *py_text_obj = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    apiShape *py_text_obj = (apiShape *)PyType_GenericNew(&apiShapeType, NULL, NULL);
     py_text_obj->c_obj = c_text;
 
     return (PyObject *)py_text_obj;
 }
 
-PyGetSetDef ProxyShape_getset[] = {
-    {"size", (getter)ProxyShape_get_size, (setter)ProxyShape_set_size, "size", NULL},
-    {"color", (getter)ProxyShape_get_color, (setter)ProxyShape_set_color, "color", NULL},
+PyGetSetDef apiShape_getset[] = {
+    {"size", (getter)apiShape_get_size, (setter)apiShape_set_size, "size", NULL},
+    {"color", (getter)apiShape_get_color, (setter)apiShape_set_color, "color", NULL},
     {NULL}};
 
-PyTypeObject ProxyShapeType = {
+PyTypeObject apiShapeType = {
     PyVarObject_HEAD_INIT(NULL, 0)
         .tp_name = "Aether.shape",
-    .tp_basicsize = sizeof(ProxyShape),
+    .tp_basicsize = sizeof(apiShape),
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_getset = ProxyShape_getset,
-    .tp_repr = (reprfunc)ProxyShape_repr,
+    .tp_getset = apiShape_getset,
+    .tp_repr = (reprfunc)apiShape_repr,
 
 };
 
@@ -281,14 +281,14 @@ PyModuleDef graphic_module = {
 
 PyMODINIT_FUNC PyInit_graphics(void)
 {
-    if (PyType_Ready(&ProxyColorType) < 0)
+    if (PyType_Ready(&apiColorType) < 0)
         return NULL;
-    if (PyType_Ready(&ProxyShapeType) < 0)
+    if (PyType_Ready(&apiShapeType) < 0)
         return NULL;
 
     PyObject *m = PyModule_Create(&graphic_module);
-    Py_INCREF(&ProxyColorType);
-    PyModule_AddObject(m, "ColorRGBA", (PyObject *)&ProxyColorType);
-    PyModule_AddObject(m, "Shape", (PyObject *)&ProxyShapeType);
+    Py_INCREF(&apiColorType);
+    PyModule_AddObject(m, "ColorRGBA", (PyObject *)&apiColorType);
+    PyModule_AddObject(m, "Shape", (PyObject *)&apiShapeType);
     return m;
 }

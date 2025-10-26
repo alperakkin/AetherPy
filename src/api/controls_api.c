@@ -1,7 +1,7 @@
-#include "proxy/controls_px.h"
-PyTypeObject ProxyControlPropType;
+#include "api/controls_api.h"
+PyTypeObject apiControlPropType;
 
-PyObject *ProxyControlProp_repr(ProxyControlProp *self)
+PyObject *apiControlProp_repr(apiControlProp *self)
 {
     ControlProp *obj = (ControlProp *)self->c_obj;
     if (!obj)
@@ -16,12 +16,12 @@ PyObject *ProxyControlProp_repr(ProxyControlProp *self)
     return PyUnicode_FromFormat(buf);
 }
 
-PyTypeObject ProxyControlPropType = {
+PyTypeObject apiControlPropType = {
     PyVarObject_HEAD_INIT(NULL, 0)
         .tp_name = "Aether.control",
-    .tp_basicsize = sizeof(ProxyControlProp),
+    .tp_basicsize = sizeof(apiControlProp),
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_repr = (reprfunc)ProxyControlProp_repr,
+    .tp_repr = (reprfunc)apiControlProp_repr,
 
 };
 
@@ -36,13 +36,13 @@ PyObject *py_createControl(PyObject *self, PyObject *args, PyObject *kwds)
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO|i", kwlist, &py_object, &py_ctrl_dict, &ctrl_type))
         return NULL;
 
-    if (!PyObject_TypeCheck(py_object, &ProxyGameObjectType))
+    if (!PyObject_TypeCheck(py_object, &apiGameObjectType))
     {
         PyErr_SetString(PyExc_TypeError, "object must be a GameObject");
         return NULL;
     }
 
-    GameObject *c_obj = ((ProxyGameObject *)py_object)->c_obj;
+    GameObject *c_obj = ((apiGameObject *)py_object)->c_obj;
 
     PyObject *keys = PyDict_Keys(py_ctrl_dict);
     Py_ssize_t count = PyList_Size(keys);
@@ -69,7 +69,7 @@ PyObject *py_createControl(PyObject *self, PyObject *args, PyObject *kwds)
 
     free(bindings);
 
-    ProxyControlProp *py_ctrl = (ProxyControlProp *)PyType_GenericNew(&ProxyControlPropType, NULL, NULL);
+    apiControlProp *py_ctrl = (apiControlProp *)PyType_GenericNew(&apiControlPropType, NULL, NULL);
     py_ctrl->c_obj = c_ctrl;
 
     return (PyObject *)py_ctrl;
@@ -95,12 +95,12 @@ PyModuleDef inputs_module = {
 
 PyMODINIT_FUNC PyInit_controls(void)
 {
-    if (PyType_Ready(&ProxyControlPropType) < 0)
+    if (PyType_Ready(&apiControlPropType) < 0)
         return NULL;
 
     PyObject *m = PyModule_Create(&controls_module);
 
-    Py_INCREF(&ProxyControlPropType);
+    Py_INCREF(&apiControlPropType);
     PyModule_AddIntConstant(m, "POS_X", POS_X);
     PyModule_AddIntConstant(m, "POS_Y", POS_Y);
     PyModule_AddIntConstant(m, "POS_ALL", POS_ALL);
@@ -111,7 +111,7 @@ PyMODINIT_FUNC PyInit_controls(void)
     PyModule_AddIntConstant(m, "KEYBOARD", KEYBOARD);
     PyModule_AddIntConstant(m, "MOUSE", MOUSE);
 
-    PyModule_AddObject(m, "ControlProp", (PyObject *)&ProxyControlPropType);
+    PyModule_AddObject(m, "ControlProp", (PyObject *)&apiControlPropType);
 
     return m;
 }

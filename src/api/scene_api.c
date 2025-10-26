@@ -1,33 +1,33 @@
-#include "proxy/scene_px.h"
+#include "api/scene_api.h"
 #include "libs/utils.h"
-PyTypeObject ProxyGameObjectType;
-PyTypeObject ProxyVector3PropType;
+PyTypeObject apiGameObjectType;
+PyTypeObject apiVector3PropType;
 
-PyMemberDef ProxyGameObject_members[] = {
+PyMemberDef apiGameObject_members[] = {
     {"name", T_STRING, offsetof(GameObject, name), 0, "Name"},
     {NULL}};
 
-PyObject *ProxyGameObject_get_position(ProxyGameObject *self, void *closure)
+PyObject *apiGameObject_get_position(apiGameObject *self, void *closure)
 {
     if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "GameObject Not Exists!");
         return NULL;
     }
-    ProxyVector3Prop *vec = (ProxyVector3Prop *)PyType_GenericNew(&ProxyVector3PropType, NULL, NULL);
+    apiVector3Prop *vec = (apiVector3Prop *)PyType_GenericNew(&apiVector3PropType, NULL, NULL);
 
     vec->c_obj = &self->c_obj->position;
 
     return (PyObject *)vec;
 }
-int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3Prop *value, void *closure)
+int apiGameObject_set_position(apiGameObject *self, apiVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
+    if (!PyObject_TypeCheck(value, &apiVector3PropType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Vector3Prop");
         return -1;
     }
-    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
+    apiVector3Prop *vec = (apiVector3Prop *)value;
 
     self->c_obj->position.x = vec->c_obj->x;
     self->c_obj->position.y = vec->c_obj->y;
@@ -36,9 +36,9 @@ int ProxyGameObject_set_position(ProxyGameObject *self, ProxyVector3Prop *value,
     return 0;
 }
 
-PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure)
+PyObject *apiGameObject_get_rotation(apiGameObject *self, void *closure)
 {
-    ProxyVector3Prop *vec = PyObject_New(ProxyVector3Prop, &ProxyVector3PropType);
+    apiVector3Prop *vec = PyObject_New(apiVector3Prop, &apiVector3PropType);
     vec->c_obj = PyMem_Malloc(sizeof(Vector3Prop));
 
     double x_rad = normalize_rad(self->c_obj->rotation.x);
@@ -50,14 +50,14 @@ PyObject *ProxyGameObject_get_rotation(ProxyGameObject *self, void *closure)
     return (PyObject *)vec;
 }
 
-int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3Prop *value, void *closure)
+int apiGameObject_set_rotation(apiGameObject *self, apiVector3Prop *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyVector3PropType))
+    if (!PyObject_TypeCheck(value, &apiVector3PropType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Vector3Prop");
         return -1;
     }
-    ProxyVector3Prop *vec = (ProxyVector3Prop *)value;
+    apiVector3Prop *vec = (apiVector3Prop *)value;
 
     double x_deg = normalize_deg(vec->c_obj->x);
     double y_deg = normalize_deg(vec->c_obj->y);
@@ -70,52 +70,52 @@ int ProxyGameObject_set_rotation(ProxyGameObject *self, ProxyVector3Prop *value,
     return 0;
 }
 
-PyObject *ProxyGameObject_get_shape(ProxyGameObject *self, void *closure)
+PyObject *apiGameObject_get_shape(apiGameObject *self, void *closure)
 {
     if (!self->c_obj)
     {
         PyErr_SetString(PyExc_AttributeError, "GameObject Not Exists!");
         return NULL;
     }
-    ProxyShape *shape = (ProxyShape *)PyType_GenericNew(&ProxyShapeType, NULL, NULL);
+    apiShape *shape = (apiShape *)PyType_GenericNew(&apiShapeType, NULL, NULL);
 
     shape->c_obj = (Shape *)self->c_obj->shape;
 
     return (PyObject *)shape;
 }
-int ProxyGameObject_set_shape(ProxyGameObject *self, ProxyShape *value, void *closure)
+int apiGameObject_set_shape(apiGameObject *self, apiShape *value, void *closure)
 {
-    if (!PyObject_TypeCheck(value, &ProxyShapeType))
+    if (!PyObject_TypeCheck(value, &apiShapeType))
     {
         PyErr_SetString(PyExc_TypeError, "Expected Shape");
         return -1;
     }
-    ProxyShape *shape = (ProxyShape *)value;
+    apiShape *shape = (apiShape *)value;
 
     self->c_obj->shape = shape->c_obj;
 
     return 0;
 }
 
-PyGetSetDef ProxyGameObject_getset[] = {
-    {"position", (getter)ProxyGameObject_get_position, (setter)ProxyGameObject_set_position, "position", NULL},
-    {"rotation", (getter)ProxyGameObject_get_rotation, (setter)ProxyGameObject_set_rotation, "rotation", NULL},
-    {"shape", (getter)ProxyGameObject_get_shape, (setter)ProxyGameObject_set_shape, "shape", NULL},
+PyGetSetDef apiGameObject_getset[] = {
+    {"position", (getter)apiGameObject_get_position, (setter)apiGameObject_set_position, "position", NULL},
+    {"rotation", (getter)apiGameObject_get_rotation, (setter)apiGameObject_set_rotation, "rotation", NULL},
+    {"shape", (getter)apiGameObject_get_shape, (setter)apiGameObject_set_shape, "shape", NULL},
     {NULL}};
 
-PyTypeObject ProxyGameObjectType = {
+PyTypeObject apiGameObjectType = {
     PyVarObject_HEAD_INIT(NULL, 0)
         .tp_name = "Aether.GameObject",
-    .tp_basicsize = sizeof(ProxyGameObject),
+    .tp_basicsize = sizeof(apiGameObject),
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_members = ProxyGameObject_members,
-    .tp_getset = ProxyGameObject_getset,
-    .tp_repr = ProxyGameObject_repr,
+    .tp_members = apiGameObject_members,
+    .tp_getset = apiGameObject_getset,
+    .tp_repr = apiGameObject_repr,
 };
 
-PyObject *ProxyGameObject_repr(PyObject *self)
+PyObject *apiGameObject_repr(PyObject *self)
 {
-    ProxyGameObject *obj = (ProxyGameObject *)self;
+    apiGameObject *obj = (apiGameObject *)self;
     return PyUnicode_FromFormat("GameObject(name='%s')", obj->c_obj->name);
 }
 
@@ -128,7 +128,7 @@ PyObject *py_CreateGameObject(PyObject *self, PyObject *args, PyObject *kwds)
 
     GameObject *c_obj = CreateGameObject(name);
 
-    ProxyGameObject *py_obj = (ProxyGameObject *)PyType_GenericNew(&ProxyGameObjectType, NULL, NULL);
+    apiGameObject *py_obj = (apiGameObject *)PyType_GenericNew(&apiGameObjectType, NULL, NULL);
     py_obj->c_obj = c_obj;
 
     return (PyObject *)py_obj;
@@ -144,7 +144,7 @@ PyObject *py_GetGameObject(PyObject *self, PyObject *args)
     if (!c_obj)
         Py_RETURN_NONE;
 
-    ProxyGameObject *py_obj = (ProxyGameObject *)PyType_GenericNew(&ProxyGameObjectType, NULL, NULL);
+    apiGameObject *py_obj = (apiGameObject *)PyType_GenericNew(&apiGameObjectType, NULL, NULL);
     py_obj->c_obj = c_obj;
 
     return (PyObject *)py_obj;
@@ -164,12 +164,12 @@ PyModuleDef scene_module = {
 
 PyMODINIT_FUNC PyInit_scene(void)
 {
-    if (PyType_Ready(&ProxyGameObjectType) < 0)
+    if (PyType_Ready(&apiGameObjectType) < 0)
         return NULL;
 
     PyObject *m = PyModule_Create(&scene_module);
-    Py_INCREF(&ProxyGameObjectType);
-    PyModule_AddObject(m, "GameObject", (PyObject *)&ProxyGameObjectType);
+    Py_INCREF(&apiGameObjectType);
+    PyModule_AddObject(m, "GameObject", (PyObject *)&apiGameObjectType);
 
     return m;
 }
