@@ -77,28 +77,12 @@ void update()
     }
 }
 
-double get_delta_time(struct timespec start_time, struct timespec end_time)
-{
-    double delta_time;
-    delta_time = (end_time.tv_sec - start_time.tv_sec) +
-                 (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
-    if (delta_time <= 0)
-        delta_time = 1e-9;
-    FPS = 1.0 / delta_time;
-
-    if (FPS < DEFAULT_FPS)
-        printf("FPS Drop %.2f\n", FPS);
-    return delta_time;
-}
-
 void game_loop(Screen *screen)
 {
-    struct timespec start_time, end_time;
-    double delta_time;
+
     while (running)
     {
 
-        clock_gettime(CLOCK_MONOTONIC, &start_time);
         update();
 
         if (render(screen) == false)
@@ -106,13 +90,12 @@ void game_loop(Screen *screen)
             running = false;
         };
 
-        clock_gettime(CLOCK_MONOTONIC, &end_time);
-        delta_time = get_delta_time(start_time, end_time);
-
         iterations++;
         if (iterations >= MAX_ITERATIONS)
         {
+            FPS = GetFPS();
             printf("DEBUG: Max Iterations reached - FPS: %.2f\n", FPS);
+
             running = false;
         }
     }

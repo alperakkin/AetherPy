@@ -20,7 +20,7 @@ def create_rect():
 def define_controls(player):
     control_dict = {
         MOUSE_MOVE: {"on": POS_ALL, "delta":0},
-        MOUSE_CLICK: {"on": POS_X, "delta":1},
+        MOUSE_CLICK: {"on": POS_X, "delta":50},
     }
     InputControl(object=player, ctrl=control_dict, ctrl_type=MOUSE)
 
@@ -40,6 +40,6 @@ def setup():
 
 
 def update():
-    player.position.x += 0.1
+    pass
 
 
