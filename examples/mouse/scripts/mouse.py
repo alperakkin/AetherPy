@@ -2,10 +2,8 @@ from Aether.scene import CreateGameObject, GetGameObject
 from Aether.transform import Vector
 from Aether.graphics import Color
 from Aether.graphics import Rectangle
-from Aether.controls import (InputControl,
-                             MOUSE,
-                             MOUSE_MOVE, MOUSE_CLICK,
-                             POS_ALL, POS_X)
+from Aether.controls import InputControl, MOUSE, POS_ALL, POS_X
+from Aether.controls.inputs import MOUSE_MOVE, MOUSE_CLICK
 player = None
 
 

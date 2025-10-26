@@ -12,3 +12,4 @@ typedef struct
 } ProxyControlProp;
 
 PyMODINIT_FUNC PyInit_controls(void);
+PyMODINIT_FUNC PyInit_inputs(void);

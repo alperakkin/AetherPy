@@ -29,7 +29,7 @@ PyObject *py_createControl(PyObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject *py_object = NULL;
     PyObject *py_ctrl_dict = NULL;
-    int *ctrl_type = KEYBOARD;
+    int ctrl_type = KEYBOARD;
 
     static char *kwlist[] = {"object", "ctrl", "ctrl_type", NULL};
 
@@ -86,12 +86,20 @@ PyModuleDef controls_module = {
     -1,
     ControlMethods};
 
+PyModuleDef inputs_module = {
+    PyModuleDef_HEAD_INIT,
+    "inputs",
+    NULL,
+    -1,
+    NULL};
+
 PyMODINIT_FUNC PyInit_controls(void)
 {
     if (PyType_Ready(&ProxyControlPropType) < 0)
         return NULL;
 
     PyObject *m = PyModule_Create(&controls_module);
+
     Py_INCREF(&ProxyControlPropType);
     PyModule_AddIntConstant(m, "POS_X", POS_X);
     PyModule_AddIntConstant(m, "POS_Y", POS_Y);
@@ -102,12 +110,24 @@ PyMODINIT_FUNC PyInit_controls(void)
     PyModule_AddIntConstant(m, "SIZE_Y", SIZE_Y);
     PyModule_AddIntConstant(m, "KEYBOARD", KEYBOARD);
     PyModule_AddIntConstant(m, "MOUSE", MOUSE);
-    PyModule_AddIntConstant(m, "W", W);
-    PyModule_AddIntConstant(m, "A", A);
-    PyModule_AddIntConstant(m, "S", S);
-    PyModule_AddIntConstant(m, "D", D);
-    PyModule_AddIntConstant(m, "MOUSE_MOVE", MOUSE_MOVE);
-    PyModule_AddIntConstant(m, "MOUSE_CLICK", MOUSE_CLICK);
-    PyModule_AddObject(m, "InputControlProp", (PyObject *)&ProxyControlPropType);
+
+    PyModule_AddObject(m, "ControlProp", (PyObject *)&ProxyControlPropType);
+
     return m;
+}
+
+PyMODINIT_FUNC PyInit_inputs(void)
+{
+
+    PyObject *inputs = PyModule_Create(&inputs_module);
+
+    PyModule_AddIntConstant(inputs, "MOUSE", MOUSE);
+    PyModule_AddIntConstant(inputs, "W", W);
+    PyModule_AddIntConstant(inputs, "A", A);
+    PyModule_AddIntConstant(inputs, "S", S);
+    PyModule_AddIntConstant(inputs, "D", D);
+    PyModule_AddIntConstant(inputs, "MOUSE_MOVE", MOUSE_MOVE);
+    PyModule_AddIntConstant(inputs, "MOUSE_CLICK", MOUSE_CLICK);
+
+    return inputs;
 }

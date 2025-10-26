@@ -2,10 +2,8 @@ from Aether.scene import CreateGameObject, GetGameObject
 from Aether.transform import Vector
 from Aether.graphics import Color
 from Aether.graphics import Rectangle
-from Aether.controls import (InputControl,
-                              POS_X, POS_Y,
-                              W, A, S, D,
-                              KEYBOARD)
+from Aether.controls import InputControl, POS_X, POS_Y, KEYBOARD
+from Aether.controls.inputs import W, A, S, D
 player = None
 
 

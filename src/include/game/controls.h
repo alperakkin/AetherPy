@@ -54,5 +54,5 @@ typedef struct
     int count;
 } ControlRegister;
 
-ControlProp *CreateControl(GameObject *obj, ControlBinding *bindings, int count, ControlType *control_type);
+ControlProp *CreateControl(GameObject *obj, ControlBinding *bindings, int count, ControlType control_type);
 extern ControlRegister control_register;
