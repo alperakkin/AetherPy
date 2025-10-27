@@ -1,48 +1,58 @@
 #include "api/game_api.h"
 
-static PyObject *pause_getter(PyObject *self, void *closure)
+PyObject *pause_call(PyObject *self, PyObject *args, PyObject *kwds)
 {
-    if (game_state.paused)
-        Py_RETURN_TRUE;
-    else
-        Py_RETURN_FALSE;
+
+    game_state.paused = true;
+    Py_RETURN_NONE;
 }
 
-static int pause_setter(PyObject *self, PyObject *value, void *closure)
+PyObject *resume_call(PyObject *self, PyObject *args, PyObject *kwds)
 {
-    printf("Value: %u\n", PyObject_IsTrue(value));
-    game_state.paused = PyObject_IsTrue(value);
-    return 0;
+    game_state.paused = false;
+    Py_RETURN_NONE;
 }
 
-static PyGetSetDef pause_getset[] = {
-    {"PAUSE", pause_getter, pause_setter, "PAUSE", NULL},
-    {NULL}};
+PyTypeObject PauseType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+        .tp_name = "gamestate.PAUSE",
+    .tp_basicsize = sizeof(PyObject),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_call = (ternaryfunc)pause_call,
 
-static PyType_Slot pause_slots[] = {
-    {Py_tp_getset, pause_getset},
-    {0, NULL}};
+};
+PyTypeObject ResumeType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+        .tp_name = "gamestate.RESUME",
+    .tp_basicsize = sizeof(PyObject),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_call = (ternaryfunc)pause_call,
 
-static PyType_Spec pause_spec = {
-    "BuiltinPause",
-    sizeof(PyObject),
-    0,
-    Py_TPFLAGS_DEFAULT,
-    pause_slots};
+};
 
-void add_builtin_pause()
+PyMethodDef gamestate_methods[] = {
+    {"PAUSE", (PyCFunction)pause_call, METH_VARARGS | METH_KEYWORDS, "PAUSE GAME"},
+    {"RESUME", (PyCFunction)resume_call, METH_VARARGS | METH_KEYWORDS, "RESUME GAME"},
+    {NULL, NULL, 0, NULL}};
+
+PyModuleDef gamestate_module = {
+    PyModuleDef_HEAD_INIT,
+    "gamestate",
+    NULL,
+    -1,
+    gamestate_methods};
+
+PyMODINIT_FUNC PyInit_gamestate(void)
 {
-    PyObject *pause_type = PyType_FromSpec(&pause_spec);
-    if (!pause_type)
-        return;
+    if (PyType_Ready(&PauseType) < 0)
+        return NULL;
+    if (PyType_Ready(&ResumeType) < 0)
+        return NULL;
 
-    PyObject *builtins = PyEval_GetBuiltins();
-    if (!builtins)
-    {
-        Py_DECREF(pause_type);
-        return;
-    }
-
-    PyDict_SetItemString(builtins, "PAUSE", pause_type);
-    Py_DECREF(pause_type);
+    PyObject *m = PyModule_Create(&gamestate_module);
+    Py_INCREF(&PauseType);
+    Py_INCREF(&ResumeType);
+    PyModule_AddObject(m, "PauseModule", (PyObject *)&PauseType);
+    PyModule_AddObject(m, "ResumeModule", (PyObject *)&ResumeType);
+    return m;
 }

@@ -28,14 +28,6 @@ bool render(Screen *screen)
     if (WindowShouldClose())
         return false;
 
-    if (game_state.paused)
-    {
-        BeginDrawing();
-        DrawTexture(pause_frame.texture, 0, 0, WHITE);
-        EndDrawing();
-        return true;
-    }
-
     BeginDrawing();
 
     ClearBackground((Color){

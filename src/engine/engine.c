@@ -68,11 +68,6 @@ void setup()
 
 void update()
 {
-    if (game_state.paused == true)
-    {
-        printf("Game paused\n");
-        return;
-    }
 
     for (int i = 0; i < MODULE_COUNT; ++i)
     {
@@ -85,8 +80,8 @@ void game_loop(Screen *screen)
 
     while (running)
     {
-
-        update();
+        if (!game_state.paused)
+            update();
 
         if (render(screen) == false)
         {

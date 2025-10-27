@@ -2,6 +2,8 @@ from Aether.scene import CreateGameObject, GetGameObject
 from Aether.transform import Vector
 from Aether.graphics import Color
 from Aether.graphics import Rectangle, Text
+from Aether.gamestate import PAUSE
+
 
 player = None
 msg = None
@@ -39,6 +41,6 @@ def update():
     player.position.x += 0.1
     if player.position.x >= 50:
         msg.shape = text
-        PAUSE = True
+        PAUSE()
 
 
