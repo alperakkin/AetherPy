@@ -1,7 +1,6 @@
 #include "engine/graphics.h"
 
-#include "settings.h"
-Screen *init_screen(Settings settings)
+Screen *init_screen()
 {
 
     Screen *screen = malloc(sizeof(Screen));

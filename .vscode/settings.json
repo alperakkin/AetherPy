@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "raylib.h": "c"
+        "raylib.h": "c",
+        "game.h": "c",
+        "scene_api.h": "c",
+        "engine.h": "c"
     }
 }

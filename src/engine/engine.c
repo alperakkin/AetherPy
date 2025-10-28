@@ -8,28 +8,9 @@ int MODULE_COUNT = 0;
 double FPS = 0;
 int iterations = 0;
 bool running = true;
-void init_settings(char *PATH, Settings *settings);
-
-void init_settings(char *PATH, Settings *settings)
-{
-    ColorProp color;
-    color.R = 0;
-    color.G = 0;
-    color.B = 0;
-    color.A = 0;
-
-    settings->SCREEN_WIDTH = DEFAULT_SCREEN_WIDTH;
-    settings->SCREEN_HEIGHT = DEFAULT_SCREEN_HEIGHT;
-    settings->background = color;
-    get_settings(PATH, settings);
-}
 
 void run(char *PATH)
 {
-
-    Settings settings;
-    init_settings(PATH, &settings);
-
     FileList fl = scan_folder(join_scripts_path(PATH));
 
     load_modules(fl);

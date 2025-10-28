@@ -1,5 +1,6 @@
 #pragma once
 #include <Python.h>
+#include "settings.h"
 #include "game/scene.h"
 #include "api/transform_api.h"
 #include "api/graphics_api.h"

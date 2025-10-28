@@ -168,6 +168,9 @@ PyMODINIT_FUNC PyInit_scene(void)
         return NULL;
 
     PyObject *m = PyModule_Create(&scene_module);
+
+    PyModule_AddIntConstant(m, "WIDTH", settings.SCREEN_WIDTH);
+    PyModule_AddIntConstant(m, "HEIGHT", settings.SCREEN_HEIGHT);
     Py_INCREF(&apiGameObjectType);
     PyModule_AddObject(m, "GameObject", (PyObject *)&apiGameObjectType);
 

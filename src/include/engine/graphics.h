@@ -8,9 +8,6 @@
 #include "settings.h"
 #include "engine/input_controls.h"
 
-#define DEFAULT_SCREEN_WIDTH 640
-#define DEFAULT_SCREEN_HEIGHT 480
-
 typedef struct
 {
     int width;
@@ -21,7 +18,7 @@ typedef struct
 bool draw_gameobject(Screen *screen, GameObject *obj);
 bool draw_objects(Screen *screen);
 
-Screen *init_screen(Settings settings);
+Screen *init_screen();
 void init_pause_frame(Screen *screen);
 bool render(Screen *screen);
 void destroy_screen(Screen *screen);

@@ -21,7 +21,7 @@ char *join_scripts_path(const char *path)
     return out;
 }
 
-void get_settings(const char *path, Settings *settings)
+void get_settings(const char *path)
 {
 
     char settings_path[MAX_PATH];
@@ -44,25 +44,25 @@ void get_settings(const char *path, Settings *settings)
             continue;
 
         if (strcmp(key, "SCREEN_WIDTH") == 0)
-            settings->SCREEN_WIDTH = atoi(value);
+            settings.SCREEN_WIDTH = atoi(value);
         else if (strcmp(key, "SCREEN_HEIGHT") == 0)
-            settings->SCREEN_HEIGHT = atoi(value);
+            settings.SCREEN_HEIGHT = atoi(value);
         else if (strcmp(key, "BACKGROUND") == 0)
             sscanf(value, "%d,%d,%d,%d",
-                   &settings->background.R,
-                   &settings->background.G,
-                   &settings->background.B,
-                   &settings->background.A);
+                   &settings.background.R,
+                   &settings.background.G,
+                   &settings.background.B,
+                   &settings.background.A);
     }
 
     fclose(file);
 
     printf("SCREEN [Width=%d, Height=%d, BG=(%d,%d,%d,%d)]\n",
-           settings->SCREEN_WIDTH, settings->SCREEN_HEIGHT,
-           settings->background.R,
-           settings->background.G,
-           settings->background.B,
-           settings->background.A);
+           settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT,
+           settings.background.R,
+           settings.background.G,
+           settings.background.B,
+           settings.background.A);
 }
 FileList scan_folder(char *folder)
 {
